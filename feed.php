@@ -4,7 +4,6 @@ include "components/header.php";
 include "components/navbar.php";
 
 require 'db.php';
-
 //On fait notre requête pour obtenir tous les posts par ordre descendant pour des donnés pas sensible du coup on fait une requête non préparé
 $sql = "SELECT * From post ORDER BY created_at DESC";
 $req = $db->query($sql);
