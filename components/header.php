@@ -6,6 +6,19 @@
     <title>Login Wolf Fitness</title>
     <link rel="stylesheet" href="stylesheet/style.css">
     <link rel="stylesheet" href="node_modules/bulma/css/bulma.css">
+    <style>
+      #footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      #footer.hidden {
+        transform: translateY(100%);
+      }
+    </style>
   </head>
   <body class="site">
     <main class="m-0">

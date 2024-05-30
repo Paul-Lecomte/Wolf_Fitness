@@ -8,22 +8,23 @@ require 'db.php';
 $sql = "SELECT * From post ORDER BY created_at DESC";
 $req = $db->query($sql);
 $posts = $req->fetchAll();
-
+$image = $req->fetch();
 if (!empty($_POST)) {
   if (isset($_POST['content']) && !empty($_POST['content'])) {
       //ici le formulaire est complet
       //on récupère les infos rentré par le user en les protégeat contre les failles est les injectons
+      $uploadedImageContent = file_get_contents($_FILES['media']['tmp_name']);
       $postContent = strip_tags($_POST['content']);
       $postCreated_at = date("Y-m-d H:i:s");
       //on peut enregistré les donnés
       //on se co a la base de donné
       require_once "db.php";
       //SQL pour la requête préparé
-      $sql = "INSERT INTO post (post_description, created_at, user_id) VALUES (:post_description, :created_at, '1')";
+      $sql = "INSERT INTO post (post_description, created_at, media, user_id) VALUES (:post_description, :created_at, :media, '1')";
       //on prépare la requete
       $req = $db->prepare($sql);
       //on bind les value
-      
+      $req->bindParam(":media", $uploadedImageContent);
       $req->bindValue(":post_description", $postContent);
       $req->bindValue(":created_at", $postCreated_at);
       //on execute la requête
@@ -33,6 +34,7 @@ if (!empty($_POST)) {
           //si vous souhaitez l'id du nouveau post crée
           $user_id = $db->lastInsertId();
           header("Location: feed.php");
+          
       }
   } else {
       die("Veuillez remplir tous les champs");
@@ -60,14 +62,16 @@ if (!empty($_POST)) {
                 </p>
                 <p>Crée le : <i> <?= $post->created_at ?> </i></p>
               </div>
-              <div class="column is-three-quarters assets pb-3 image" style="max-width:75%;">
-                <img src="assets/hll.jpg" alt="random image">
+              <div class="column is-three-quarters assets pb-3 assets image">
+                <?php if ($post->media): ?>
+                  <img src="data:image/jpeg;base64,<?= base64_encode($post->media) ?>" alt="post image" class="" style="max-height: 25rem; object-fit: cover;">
+                <?php endif; ?>
               </div>
           </div>
           <div class="post_footer container is-three-quarters">
-              <button class="comment image is-32x32">
+              <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
                 <img src="assets/comment.svg" alt="">
-              </button>
+                </a>
               <button class="repost image is-32x32">
                 <img src="assets/repost.svg" alt="">
               </button>
@@ -81,13 +85,13 @@ if (!empty($_POST)) {
       </div>
       <!-- New post ----------------------------------------------------------------------------->
       <div id="new-post" class="p-3">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
           <div class="cp-container pb-4">
             <p>
               Write something fun
             </p>
             <div class="cp-assets">
-              <button class="p-1 c-button">Assets</button>
+              <input type="file" name="media" class="p-1 c-button"></input>
             </div>
           </div>
           <div class="cp-description control">

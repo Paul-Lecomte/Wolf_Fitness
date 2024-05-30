@@ -1,3 +1,4 @@
+
 /*page loader-----------------------------*/
  gsap.fromTo(
       ".loading-page",
@@ -23,9 +24,6 @@
         delay: 0.5,
       }
     );
-
-
-
   
 /*New post --------------------------------------------*/
     function newPost(){
