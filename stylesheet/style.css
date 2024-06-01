@@ -79,6 +79,7 @@ body{
 }
 
 textarea{
+  border-radius: 25px;
   resize: none;
   width: 100%;
   height: 7rem;

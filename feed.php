@@ -5,7 +5,7 @@ include "components/navbar.php";
 
 require 'db.php';
 //On fait notre requête pour obtenir tous les posts par ordre descendant pour des donnés pas sensible du coup on fait une requête non préparé
-$sql = "SELECT * From post ORDER BY created_at DESC";
+$sql = "SELECT * FROM post ORDER BY created_at DESC";
 $req = $db->query($sql);
 $posts = $req->fetchAll();
 $image = $req->fetch();
@@ -37,6 +37,7 @@ if (!empty($_POST)) {
           
       }
   } else {
+      header("Location: feed.php");
       die("Veuillez remplir tous les champs");
   }
 }
@@ -90,15 +91,17 @@ if (!empty($_POST)) {
             <p>
               Write something fun
             </p>
-            <div class="cp-assets">
-              <input type="file" name="media" class="p-1 c-button"></input>
-            </div>
           </div>
           <div class="cp-description control">
-            <textarea class="p-1" name="content" id="cp-input"></textarea>
+            <textarea class="p-1 box" name="content" id="cp-input"></textarea>
           </div>
-          <button class="mt-3 p-1 c-button" onclick="closeNewPost()">Close</button>
-          <button class="mt-3 p-1 c-button control" type="submit">Post it</button>
+          <div class="cp-assets p-3">
+            <input type="file" name="media" class="p-1 c-button"></input>
+          </div>
+          <div class="is-flex is-justify-content-space-around">
+            <button class="mt-3 p-1 c-button" onclick="closeNewPost()">Close</button>
+            <button class="mt-3 p-1 c-button" type="submit">Post it</button>
+          </div>
         </form>
       </div>
       <?php
