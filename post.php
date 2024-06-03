@@ -15,7 +15,6 @@ $req = $db->prepare($sql);
 $req->bindValue(':id', $id, PDO::PARAM_INT);
 $req->execute();
 $post = $req->fetch();
-
 $sql = "SELECT * FROM comment ORDER BY created_at DESC";
 $req = $db->query($sql);
 $comments = $req->fetchAll(PDO::FETCH_OBJ);
@@ -78,9 +77,7 @@ if (!$post){
                 <p>Crée le : <i> <?= $post->created_at ?> </i></p>
               </div>
               <div class="column is-full assets pb-3 assets image">
-                <?php if ($post->media): ?>
-                  <img src="data:image/jpeg;base64,<?= base64_encode($post->media) ?>" alt="post image" class="" style="object-fit: cover;">
-                <?php endif; ?>
+                <img src="<?= $post->media ?>" alt="post image" class="" style="max-height: 25rem; object-fit: cover;">
               </div>
           </div>
           <div class="post_footer container is-three-quarters">

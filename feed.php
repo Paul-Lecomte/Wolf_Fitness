@@ -9,29 +9,59 @@ $sql = "SELECT * FROM post ORDER BY created_at DESC";
 $req = $db->query($sql);
 $posts = $req->fetchAll();
 $image = $req->fetch();
+
+
 if (!empty($_POST)) {
   if (isset($_POST['content']) && !empty($_POST['content'])) {
-      //ici le formulaire est complet
-      //on récupère les infos rentré par le user en les protégeat contre les failles est les injectons
-      $uploadedImageContent = file_get_contents($_FILES['media']['tmp_name']);
+      //here the form is complete
+      //we recover the information entered by the user while protecting it against flaws and injecting it
       $postContent = strip_tags($_POST['content']);
       $postCreated_at = date("Y-m-d H:i:s");
-      //on peut enregistré les donnés
-      //on se co a la base de donné
+      // Get reference to uploaded image
+      $image_file = $_FILES["media"];
+      // Exit if no file uploaded
+      if (!isset($image_file)) {
+          die('No file uploaded.');
+      }
+      // Exit if image file is zero bytes
+      if (filesize($image_file["tmp_name"]) <= 0) {
+          die('Uploaded file has no contents.');
+      }
+      // Exit if is not a valid image file
+      $image_type = exif_imagetype($image_file["tmp_name"]);
+      if (!$image_type) {
+          die('Uploaded file is not an image.');
+      }
+
+      // Get file extension based on file type, to prepend a dot we pass true as the second parameter
+      $image_extension = image_type_to_extension($image_type, true);
+      // Create a unique image name
+      $image_name = bin2hex(random_bytes(16)) . $image_extension;
+      // Move the temp image file to the images directory
+      move_uploaded_file(
+          // Temp image location
+          $image_file["tmp_name"],
+          // New image location
+          $mediaPath = "uploads/" . $image_name
+      ); 
+
+
+      //we can save the data
+      //we connect to the DB
       require_once "db.php";
-      //SQL pour la requête préparé
+      //SQL for the request
       $sql = "INSERT INTO post (post_description, created_at, media, user_id) VALUES (:post_description, :created_at, :media, '1')";
-      //on prépare la requete
+      //we prep the request
       $req = $db->prepare($sql);
-      //on bind les value
-      $req->bindParam(":media", $uploadedImageContent);
+      //we bind the value
+      $req->bindParam(":media", $mediaPath);
       $req->bindValue(":post_description", $postContent);
       $req->bindValue(":created_at", $postCreated_at);
-      //on execute la requête
+      //we execute the request
       if (!$req->execute()) {
           die("requête post échouer");
       } else {
-          //si vous souhaitez l'id du nouveau post crée
+          //if needed the post id is created
           $user_id = $db->lastInsertId();
           header("Location: feed.php");
           
@@ -64,9 +94,7 @@ if (!empty($_POST)) {
                 <p>Crée le : <i> <?= $post->created_at ?> </i></p>
               </div>
               <div class="column is-three-quarters assets pb-3 assets image">
-                <?php if ($post->media): ?>
-                  <img src="data:image/jpeg;base64,<?= base64_encode($post->media) ?>" alt="post image" class="" style="max-height: 25rem; object-fit: cover;">
-                <?php endif; ?>
+                <img src="<?= $post->media ?>" alt="post image" class="" style="max-height: 25rem; object-fit: cover;">
               </div>
           </div>
           <div class="post_footer container is-three-quarters">

@@ -19,16 +19,33 @@
 CREATE DATABASE IF NOT EXISTS `wolf_fitness` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `wolf_fitness`;
 
+-- Listage de la structure de table wolf_fitness. comment
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `comment_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `created_at` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '""',
+  `comment_author` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '""',
+  PRIMARY KEY (`id`),
+  KEY `FK_comment_users` (`user_id`),
+  CONSTRAINT `FK_comment_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Les données exportées n'étaient pas sélectionnées.
+
 -- Listage de la structure de table wolf_fitness. post
 CREATE TABLE IF NOT EXISTS `post` (
-  `post_id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `post_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `post_content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `post_content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '""',
   `user_id` int NOT NULL,
-  PRIMARY KEY (`post_id`),
+  `created_at` varchar(50) COLLATE utf8mb4_bin NOT NULL DEFAULT '""',
+  `post_author` varchar(50) COLLATE utf8mb4_bin NOT NULL DEFAULT '""',
+  `media` longblob NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 
@@ -38,13 +55,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_firstname` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `user_lastname` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `user_age` int DEFAULT NULL,
-  `user_username` varchar(30) COLLATE utf8mb4_bin NOT NULL,
+  `user_username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `user_email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `user_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `user_bio` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `user_profile_pic` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 
