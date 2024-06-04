@@ -27,6 +27,10 @@ if (!empty($_POST)) {
       if (filesize($image_file["tmp_name"]) <= 0) {
           die('Uploaded file has no contents.');
       }
+      //Exit if file is too big
+      if (filesize($image_file["tmp_name"]) <= 107374182) {
+          die('The file uploaded is too large.');
+      }
       // Exit if is not a valid image file
       $image_type = exif_imagetype($image_file["tmp_name"]);
       if (!$image_type) {
@@ -50,7 +54,7 @@ if (!empty($_POST)) {
       //we connect to the DB
       require_once "db.php";
       //SQL for the request
-      $sql = "INSERT INTO post (post_description, created_at, media, user_id) VALUES (:post_description, :created_at, :media, '1')";
+      $sql = "INSERT INTO post (post_description, created_at, media, user_id) VALUES (:post_description, :created_at, :media, '2')";
       //we prep the request
       $req = $db->prepare($sql);
       //we bind the value
