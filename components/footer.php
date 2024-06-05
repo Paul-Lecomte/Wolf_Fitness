@@ -20,12 +20,23 @@
                 Notifications
               </p>
             </a>
+            <?php if (isset($_SESSION["user"])): ?>
             <button class="post has-text-centered column is-one-quarter img is-32x32" onclick="newPost()">
               <img src="assets/plus.svg" alt="Post button">
               <p>
                 Post
               </p>
             </button>
+            <?php else: ?>
+            <button type="button" class="post has-text-centered column is-one-quarter img is-32x32">
+              <a href="login.php">
+                <img src="assets/plus.svg" alt="Post button">
+                <p>
+                  Post
+                </p>
+              </a>
+            </button>
+            <?php endif; ?>
           </div>
         </nav> 
       </footer>

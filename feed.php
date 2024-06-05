@@ -17,50 +17,53 @@ if (!empty($_POST)) {
       //we recover the information entered by the user while protecting it against flaws and injecting it
       $postContent = strip_tags($_POST['content']);
       $postCreated_at = date("Y-m-d H:i:s");
+      $author = $_SESSION['user']["username"];
+      $pp_user = $_SESSION['user']["profile_pic"];
       // Get reference to uploaded image
       $image_file = $_FILES["media"];
-      // Exit if no file uploaded
-      if (!isset($image_file)) {
-          die('No file uploaded.');
-      }
-      // Exit if image file is zero bytes
-      if (filesize($image_file["tmp_name"]) <= 0) {
-          die('Uploaded file has no contents.');
-      }
-      //Exit if file is too big
-      if (filesize($image_file["tmp_name"]) <= 107374182) {
-          die('The file uploaded is too large.');
-      }
-      // Exit if is not a valid image file
-      $image_type = exif_imagetype($image_file["tmp_name"]);
-      if (!$image_type) {
-          die('Uploaded file is not an image.');
-      }
+        if ($image_file['error'] === UPLOAD_ERR_NO_FILE) {
+            die('No file uploaded.');
+        }
 
-      // Get file extension based on file type, to prepend a dot we pass true as the second parameter
-      $image_extension = image_type_to_extension($image_type, true);
-      // Create a unique image name
-      $image_name = bin2hex(random_bytes(16)) . $image_extension;
-      // Move the temp image file to the images directory
-      move_uploaded_file(
-          // Temp image location
-          $image_file["tmp_name"],
-          // New image location
-          $mediaPath = "uploads/" . $image_name
-      ); 
+        // Validate the uploaded file
+        if ($image_file['error'] !== UPLOAD_ERR_OK) {
+            die('Error during file upload.');
+        }
+
+        if (filesize($image_file["tmp_name"]) <= 0) {
+            die('Uploaded file has no contents.');
+        }
+
+        if (filesize($image_file["tmp_name"]) > 107374182) { // 100 MB
+            die('The file uploaded is too large.');
+        }
+
+        $image_type = exif_imagetype($image_file["tmp_name"]);
+        if (!$image_type) {
+            die('Uploaded file is not an image.');
+        }
+
+        $image_extension = image_type_to_extension($image_type, true);
+        $image_name = bin2hex(random_bytes(16)) . $image_extension;
+        $mediaPath = "uploads/" . $image_name;
+        if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
+            die('Failed to move uploaded file.');
+        }
 
 
       //we can save the data
       //we connect to the DB
       require_once "db.php";
       //SQL for the request
-      $sql = "INSERT INTO post (post_description, created_at, media, user_id) VALUES (:post_description, :created_at, :media, '2')";
+      $sql = "INSERT INTO post (post_description, created_at, media, post_author, pp_user) VALUES (:post_description, :created_at, :media, :post_author, :pp_user)";
       //we prep the request
       $req = $db->prepare($sql);
       //we bind the value
       $req->bindParam(":media", $mediaPath);
       $req->bindValue(":post_description", $postContent);
       $req->bindValue(":created_at", $postCreated_at);
+      $req->bindValue(":post_author", $author);
+      $req->bindValue(":pp_user", $pp_user);
       //we execute the request
       if (!$req->execute()) {
           die("requête post échouer");
@@ -84,10 +87,10 @@ if (!empty($_POST)) {
         <div class="css_post container column is-half my-6">
           <div class="profile container is-flex-direction-row pb-2">
               <div class="profile-img image is-48x48">
-                  <img src="./assets/logo.svg" alt="profile image">
+                  <img src="<?= $post->pp_user ?>" alt="profile image">
               </div>
               <div class="profile-name pl-3">
-                <p><?= $post->user_id ?></p>
+                <p><?= $post->post_author ?></p>
               </div>
           </div>
           <div class="post-content pers_align is-justify-content-center is-align-items-center pb-3">
@@ -104,10 +107,7 @@ if (!empty($_POST)) {
           <div class="post_footer container is-three-quarters">
               <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
                 <img src="assets/comment.svg" alt="">
-                </a>
-              <button class="repost image is-32x32">
-                <img src="assets/repost.svg" alt="">
-              </button>
+              </a>
               <button class="like image is-32x32">
                 <img src="assets/heart.svg" alt="">
               </button>

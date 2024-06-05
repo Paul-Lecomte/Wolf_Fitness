@@ -1,37 +1,80 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login Wolf Fitness</title>
-    <link rel="stylesheet" href="stylesheet/style.css">
-    <link rel="stylesheet" href="node_modules/bulma/css/bulma.css">
-  </head>
-  <body>
+<?php
+include 'components/header.php';
+
+//on vàrifie que le form ne soit pas vide
+if (!empty($_POST)) {
+    //ici le formualire est envoyé
+    //on vérifie que tous les champs soit remplie
+    if (isset($_POST["email"], $_POST["password"])  && !empty($_POST["email"]) && !empty($_POST["password"])) {
+        //on check l'email
+        if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+            die("L'adresse email n'est pas valide");
+        }
+
+        //on peut enregistrer notre user
+        //on se co a la db
+        require_once "db.php";
+
+        //Requête préparé
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $req = $db->prepare($sql);
+        $req->bindValue(':email', $_POST["email"]);
+        $req->execute();
+        $user = $req->fetch();
+
+        //si l'email n'existe pas dans bd
+        if (!$user) {
+            die("Les info de connection ne sont pas valable");
+        }
+
+        //ici j'ai un user dans la db donc je dois comparém le mot de passe
+        if (password_verify($_POST["password"], $user->password)) {
+          session_start();
+          $_SESSION["user"] = [
+            "id" => $user->id,
+            "username" => $user->username,
+            "email" => $user->email,
+            "profile_pic" => $user->profile_pic,
+          ];
+          header("Location: feed.php");
+          exit();
+        } else {
+          die("information de connexion incorrect");
+        }
+        //ici on a un user co valide donc on crée la session
+        
+
+    } else {
+        die("formulaire incomplet");
+    }
+}
+?>
     <div class="logo container my-6 pers_align">
       <img style="max-width: 20%" src="assets/logo.svg" alt="wolf fitness logo">
     </div>
-    <div class="columns is-max-desktop pers_align">
-      <div class="field column my-3 is-half pers_align">
-        <label class="label">EMAIL</label>
-        <div class="control">
-          <input class="input" type="text">
+    <form method="post">
+      <div class="columns is-max-desktop pers_align">
+        <div class="field column my-3 is-half pers_align">
+          <label class="label">EMAIL</label>
+          <div class="control">
+            <input class="input" name="email" type="text">
+          </div>
         </div>
-      </div>
-      <div class="field column my-3 is-half pers_align">
-        <label class="label">PASSWORD</label>
-        <div class="control">
-          <input class="input" type="text">
+        <div class="field column my-3 is-half pers_align">
+          <label class="label">PASSWORD</label>
+          <div class="control">
+            <input class="input" name="password" type="text">
+          </div>
         </div>
+        <div class="control pers_align">
+          <button type="button" class="mt-3 p-2 c-button-red is-align-self-center"><a style="color:red;" href="create_login.php">Create Account</a></button>
+          <button type="submit" class="mt-3 p-2 c-button">LOGIN</button>
+        </div>
+        
       </div>
-      <div class="control pers_align">
-        <a href="create_login.php">
-          <button class="mt-3 p-2 c-button-red">Create Account</button>
-        </a>
-        <a href="feed.php">
-          <button class="mt-3 p-2 c-button">SUBMIT</button>
-        </a>
-      </div>
-    </div>
+    </form>
+    
+    
+    
   </body>
 </html>
