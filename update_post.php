@@ -36,22 +36,44 @@ $title = "Mon site || Modifier a post";
 if($_SESSION["user"]["username"] == $post->post_author) {
     //On traite le formulaire
     if(!empty($_POST)) {
-        if(!empty($_POST["title"]) && !empty($_POST["content"])) {
+        if(!empty($_POST["content"])) {
             //Ici le formulaire est complet
             //On récupère les infos en les protégeant
-            $postTitle = strip_tags($_POST["title"]);
             $postContent = strip_tags($_POST["content"]);
-            $author = $post->author;
 
-            //On peut enregistrer les données
+            // Check if a file was uploaded
+            if (isset($_FILES["media"]) && $_FILES["media"]["error"] !== UPLOAD_ERR_NO_FILE) {
+                $image_file = $_FILES["media"];
+            
+                // Validate the uploaded file
+                if ($image_file['error'] !== UPLOAD_ERR_OK) {
+                    die('Error during file upload.');
+                }
+                
+                if (filesize($image_file["tmp_name"]) > 107374182) { // 100 MB
+                    die('The file uploaded is too large.');
+                }
+            
+                $image_type = exif_imagetype($image_file["tmp_name"]);
+                if (!$image_type) {
+                    die('Uploaded file is not an image.');
+                }
+            
+                $image_extension = image_type_to_extension($image_type, true);
+                $image_name = bin2hex(random_bytes(16)) . $image_extension;
+                $mediaPath = "uploads/" . $image_name;
+                if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
+                    die('Failed to move uploaded file.');
+                }
+            } else {
+                $mediaPath = $post->media;
+            }
 
             //SQL
-            $sql = "UPDATE posta SET title = :title, content = :content, author = :author WHERE id = :id";
-
+            $sql = "UPDATE post SET post_description = :post_description, media = :media WHERE id = :id";
             $req = $db->prepare($sql);
-            $req->bindValue(":title", $postTitle);
-            $req->bindValue(":content", $postContent);
-            $req->bindValue(":author", $author);
+            $req->bindValue(":post_description", $postContent);
+            $req->bindParam(":media", $mediaPath);
             $req->bindValue(":id", $id);
 
             if(!$req->execute()) {
@@ -61,37 +83,33 @@ if($_SESSION["user"]["username"] == $post->post_author) {
             }
 
             //Ici on a réussi à modifier le post
-            header("Location: post.php?id=" .$id);
+            header("Location: feed.php");
         }
     }
 
 
 } else {
-    header("Location: blog.php");
+    header("Location: feed.php");
 }
-
-
-
-
-
-
 ?>
-    <div id="new-post" class="p-3">
-        <form method="post" enctype="multipart/form-data">
+    <div class="p-3">
+        <form method="post" class="is-flex is-flex-direction-column pers_align" enctype="multipart/form-data">
             <div class="cp-container pb-4">
                 <p>
-                    Write something fun
+                    Update the post
                 </p>
             </div>
             <div class="cp-description control">
-                <textarea class="p-1 box" name="content" id="cp-input"></textarea>
+                <textarea class="p-1 box" name="content" id="cp-input"><?= $post->post_description ?></textarea>
             </div>
             <div class="cp-assets p-3">
                 <input type="file" name="media" class="p-1 c-button"></input>
             </div>
+            <div class="column is-full assets pb-3 assets image">
+                <img src="<?= $post->media ?>" alt="post image" class="" style="max-height: 25rem; object-fit: contain;">
+              </div>
             <div class="is-flex is-justify-content-space-around">
-                <button class="mt-3 p-1 c-button" onclick="closeNewPost()">Close</button>
-                <button class="mt-3 p-1 c-button" type="submit">Post it</button>
+                <button class="mt-3 p-1 c-button" type="submit">Modify</button>
             </div>
         </form>
     </div>

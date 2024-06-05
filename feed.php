@@ -10,73 +10,65 @@ $req = $db->query($sql);
 $posts = $req->fetchAll();
 $image = $req->fetch();
 
-
 if (!empty($_POST)) {
-  if (isset($_POST['content']) && !empty($_POST['content'])) {
-      //here the form is complete
-      //we recover the information entered by the user while protecting it against flaws and injecting it
-      $postContent = strip_tags($_POST['content']);
-      $postCreated_at = date("Y-m-d H:i:s");
-      $author = $_SESSION['user']["username"];
-      $pp_user = $_SESSION['user']["profile_pic"];
-      // Get reference to uploaded image
-      $image_file = $_FILES["media"];
-        if ($image_file['error'] === UPLOAD_ERR_NO_FILE) {
-            die('No file uploaded.');
+    // Check if content is provided or if a file is uploaded
+    if ((isset($_POST['content']) && !empty($_POST['content'])) || (isset($_FILES["media"]) && !empty($_FILES["media"]["tmp_name"]))) {
+        $postContent = isset($_POST['content']) ? strip_tags($_POST['content']) : null; // Set to null if content is not provided
+        $postCreated_at = date("Y-m-d H:i:s");
+        $author = $_SESSION['user']["username"];
+        $pp_user = $_SESSION['user']["profile_pic"];
+
+        $mediaPath = null; // Initialize media path to null
+
+        // Check if a file is uploaded
+        if (isset($_FILES["media"]) && !empty($_FILES["media"]["tmp_name"])) {
+            $image_file = $_FILES["media"];
+
+            // Validate the uploaded file
+            if ($image_file['error'] !== UPLOAD_ERR_OK) {
+                die('Error during file upload.');
+            }
+
+            if (filesize($image_file["tmp_name"]) <= 0) {
+                die('Uploaded file has no contents.');
+            }
+
+            if (filesize($image_file["tmp_name"]) > 107374182) { // 100 MB
+                die('The file uploaded is too large.');
+            }
+
+            $image_type = exif_imagetype($image_file["tmp_name"]);
+            if (!$image_type) {
+                die('Uploaded file is not an image.');
+            }
+
+            $image_extension = image_type_to_extension($image_type, true);
+            $image_name = bin2hex(random_bytes(16)) . $image_extension;
+            $mediaPath = "uploads/" . $image_name;
+            if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
+                die('Failed to move uploaded file.');
+            }
         }
 
-        // Validate the uploaded file
-        if ($image_file['error'] !== UPLOAD_ERR_OK) {
-            die('Error during file upload.');
+        // Insert data into the database
+        require_once "db.php";
+        $sql = "INSERT INTO post (post_description, created_at, media, post_author, pp_user) VALUES (:post_description, :created_at, :media, :post_author, :pp_user)";
+        $req = $db->prepare($sql);
+        $req->bindParam(":media", $mediaPath);
+        $req->bindValue(":post_description", $postContent);
+        $req->bindValue(":created_at", $postCreated_at);
+        $req->bindValue(":post_author", $author);
+        $req->bindValue(":pp_user", $pp_user);
+        if (!$req->execute()) {
+            die("Post request failed");
+        } else {
+            header("Location: feed.php");
+            exit();
         }
-
-        if (filesize($image_file["tmp_name"]) <= 0) {
-            die('Uploaded file has no contents.');
-        }
-
-        if (filesize($image_file["tmp_name"]) > 107374182) { // 100 MB
-            die('The file uploaded is too large.');
-        }
-
-        $image_type = exif_imagetype($image_file["tmp_name"]);
-        if (!$image_type) {
-            die('Uploaded file is not an image.');
-        }
-
-        $image_extension = image_type_to_extension($image_type, true);
-        $image_name = bin2hex(random_bytes(16)) . $image_extension;
-        $mediaPath = "uploads/" . $image_name;
-        if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
-            die('Failed to move uploaded file.');
-        }
-
-
-      //we can save the data
-      //we connect to the DB
-      require_once "db.php";
-      //SQL for the request
-      $sql = "INSERT INTO post (post_description, created_at, media, post_author, pp_user) VALUES (:post_description, :created_at, :media, :post_author, :pp_user)";
-      //we prep the request
-      $req = $db->prepare($sql);
-      //we bind the value
-      $req->bindParam(":media", $mediaPath);
-      $req->bindValue(":post_description", $postContent);
-      $req->bindValue(":created_at", $postCreated_at);
-      $req->bindValue(":post_author", $author);
-      $req->bindValue(":pp_user", $pp_user);
-      //we execute the request
-      if (!$req->execute()) {
-          die("requête post échouer");
-      } else {
-          //if needed the post id is created
-          $user_id = $db->lastInsertId();
-          header("Location: feed.php");
-          
-      }
-  } else {
-      header("Location: feed.php");
-      die("Veuillez remplir tous les champs");
-  }
+    } else {
+        header("Location: feed.php");
+        die("Please provide content or upload a file.");
+    }
 }
 ?>
       
