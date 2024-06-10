@@ -22,6 +22,7 @@ $req = $db->prepare($sql);
 $req->bindValue(":id", $id, PDO::PARAM_INT);
 $req->execute();
 $post = $req->fetch();
+$old_media = $post->media;
 
 //On vérifie si le post est vide
 if(!$post) {
@@ -66,6 +67,8 @@ if($_SESSION["user"]["username"] == $post->post_author) {
                     die('Failed to move uploaded file.');
                 }
             } else {
+                //delete the old image and use mediapath as the new url
+                unlink($old_media);
                 $mediaPath = $post->media;
             }
 

@@ -86,8 +86,8 @@ if (!$post){
                 </p>
                 <p>Crée le : <i> <?= $post->created_at ?> </i></p>
               </div>
-              <div class="column is-full assets pb-3 assets image">
-                <img src="<?= $post->media ?>" alt="post image" class="" style="max-height: 25rem; object-fit: cover;">
+              <div class=<?php if ($post->media === null){echo ' is-hidden';} else{echo 'column is-three-quarters assets pb-3 assets image';} ?>>
+                  <img src="<?= $post->media ?>" alt="" class="" style="max-height: 25rem; object-fit: cover;">
               </div>
           </div>
           <div class="post_footer container is-three-quarters">
@@ -130,7 +130,6 @@ if (!$post){
               </button>
           </div>
         </div>
-        <span class="lower_border has-border-bottom"></span>
         <?php endforeach; ?>
         <!-- New comment ----------------------------------------------------------------------------->
         <div id="new-post" class="p-3">

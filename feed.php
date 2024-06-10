@@ -4,11 +4,29 @@ include "components/header.php";
 include "components/navbar.php";
 
 require 'db.php';
-//On fait notre requête pour obtenir tous les posts par ordre descendant pour des donnés pas sensible du coup on fait une requête non préparé
+
+$existingColumns = $db->query("DESCRIBE post")->fetchAll(PDO::FETCH_COLUMN);
+if (!in_array('likes', $existingColumns)) {
+    // Add likes column if not exists
+    $sql = "ALTER TABLE post ADD COLUMN likes INT DEFAULT 0";
+    $db->exec($sql);
+}
+
+// Check if a like is submitted
+if (isset($_POST['like']) && isset($_POST['post_id'])) {
+    $postId = $_POST['post_id'];
+
+    // Update the like count in the database
+    $sql = "UPDATE post SET likes = likes + 1 WHERE id = :post_id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':post_id', $postId);
+    $stmt->execute();
+}
+
+// Fetch posts from the database
 $sql = "SELECT * FROM post ORDER BY created_at DESC";
 $req = $db->query($sql);
 $posts = $req->fetchAll();
-$image = $req->fetch();
 
 if (!empty($_POST)) {
     // Check if content is provided or if a file is uploaded
@@ -71,63 +89,65 @@ if (!empty($_POST)) {
     }
 }
 ?>
-      
-      <!-- Feed ----------------------------------------------------------------------------->
-      <div class="feed is-fullheight columns pers_align">
-        <!-- Post ----------------------------------------------------------------------------->
-        <?php foreach ($posts as $post) : ?>
-        <div class="css_post container column is-half my-6">
-          <div class="profile container is-flex-direction-row pb-2">
-              <div class="profile-img image is-48x48">
-                  <img src="<?= $post->pp_user ?>" alt="profile image">
-              </div>
-              <div class="profile-name pl-3">
+<!-- Feed ----------------------------------------------------------------------------->
+<div class="feed is-fullheight columns pers_align">
+    <!-- Post ----------------------------------------------------------------------------->
+    <?php foreach ($posts as $post) : ?>
+    <div class="css_post container column is-half my-6">
+        <div class="profile container is-flex-direction-row pb-2">
+            <div class="profile-img image is-48x48">
+                <img src="<?= $post->pp_user ?>" alt="profile image">
+            </div>
+            <div class="profile-name pl-3">
                 <p><?= $post->post_author ?></p>
-              </div>
-          </div>
-          <div class="post-content pers_align is-justify-content-center is-align-items-center pb-3">
-              <div class="description pb-3">
-                <p>
-                  <?= strip_tags($post->post_description) ?>
-                </p>
-                <p>Crée le : <i> <?= $post->created_at ?> </i></p>
-              </div>
-              <div class="column is-three-quarters assets pb-3 assets image">
-                <img src="<?= $post->media ?>" alt="post image" class="" style="max-height: 25rem; object-fit: cover;">
-              </div>
-          </div>
-          <div class="post_footer container is-three-quarters">
-              <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
-                <img src="assets/comment.svg" alt="">
-              </a>
-              <button class="like image is-32x32">
-                <img src="assets/heart.svg" alt="">
-              </button>
-          </div>
+            </div>
         </div>
-        <span class="lower_border has-border-bottom"></span>
-        <?php endforeach; ?>
-      </div>
-      <!-- New post ----------------------------------------------------------------------------->
-      <div id="new-post" class="p-3">
-        <form method="post" enctype="multipart/form-data">
-          <div class="cp-container pb-4">
+        <div class="post-content pers_align is-justify-content-center is-align-items-center pb-3">
+            <div class="description pb-3">
+                <p><?= strip_tags($post->post_description) ?></p>
+                <p>Crée le : <i><?= $post->created_at ?></i></p>
+            </div>
+            <div class=<?php if ($post->media === null){echo ' is-hidden';} else{echo 'column is-three-quarters assets pb-3 assets image';} ?>>
+                <img src="<?= $post->media ?>" alt="" class="" style="max-height: 25rem; object-fit: cover;">
+            </div>
+        </div>
+        <div class="post_footer container is-three-quarters">
+            <form method="post" class="is-flex is-align-items-center is-flex-direction-row">
+                <input type="hidden" name="post_id" value="<?= $post->id ?>">
+                <button type="submit" name="like" class="like image is-32x32">
+                    <img src="assets/heart.svg" alt="">
+                </button>
+                <span class="pl-3"><?= $post->likes ?> likes</span>
+            </form>
+            <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
+                <img src="assets/comment.svg" alt="">
+            </a>
+        </div>
+    </div>
+    <span class="lower_border has-border-bottom"></span>
+    <?php endforeach; ?>
+</div>
+<!-- New post ----------------------------------------------------------------------------->
+<div id="new-post" class="p-3">
+    <form method="post" enctype="multipart/form-data">
+        <div class="cp-container pb-4">
             <p>
-              Write something fun
+                Write something fun
             </p>
-          </div>
-          <div class="cp-description control">
+        </div>
+        <div class="cp-description control">
             <textarea class="p-1 box" name="content" id="cp-input"></textarea>
-          </div>
-          <div class="cp-assets p-3">
+        </div>
+        <div class="cp-assets p-3">
             <input type="file" name="media" class="p-1 c-button"></input>
-          </div>
-          <div class="is-flex is-justify-content-space-around">
+        </div>
+        <div class="is-flex is-justify-content-space-around">
             <button class="mt-3 p-1 c-button" onclick="closeNewPost()">Close</button>
             <button class="mt-3 p-1 c-button" type="submit">Post it</button>
-          </div>
-        </form>
-      </div>
-      <?php
+        </div>
+    </form>
+</div>
+
+<?php
 include "components/footer.php";
 ?>

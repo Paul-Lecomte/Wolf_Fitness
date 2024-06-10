@@ -14,13 +14,15 @@
                 Search
               </p>
             </button>
-            <a class="notif has-text-centered column is-one-quarter img is-32x32">
-              <img src="assets/bell.svg" alt="Notifications button">
-              <p>
-                Notifications
-              </p>
-            </a>
             <?php if (isset($_SESSION["user"])): ?>
+            <button type="button" class="post has-text-centered column is-one-quarter img is-32x32">
+              <a href="profile.php">
+                <img src="assets/profile.svg" alt="profile">
+                <p>
+                  Profile
+                </p>
+              </a>
+            </button>
             <button class="post has-text-centered column is-one-quarter img is-32x32" onclick="newPost()">
               <img src="assets/plus.svg" alt="Post button">
               <p>
@@ -28,6 +30,14 @@
               </p>
             </button>
             <?php else: ?>
+            <button type="button" class="post has-text-centered column is-one-quarter img is-32x32">
+              <a href="login.php">
+                <img src="assets/profile.svg" alt="profile">
+                <p>
+                  Profile
+                </p>
+              </a>
+            </button>
             <button type="button" class="post has-text-centered column is-one-quarter img is-32x32">
               <a href="login.php">
                 <img src="assets/plus.svg" alt="Post button">

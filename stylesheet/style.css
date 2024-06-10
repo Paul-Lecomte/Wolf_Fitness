@@ -41,6 +41,14 @@
   border-radius: 15%;
 }
 
+.pers_text{
+  text-wrap: wrap !important;
+}
+
+#post_media{
+  display: flex !important;
+}
+
 /*login------------------------------------------------------------------*/
 .control{
   width: 100%;
@@ -94,7 +102,7 @@ textarea{
 
 /*Footer-------------------------------------------------------------------*/
 .pers-footer{
-  background-color: #14161a6e !important;
+  background-color: #14161ab2 !important;
 }
 
 /*Feed----------------------------------------------------------------------*/
