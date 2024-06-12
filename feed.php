@@ -4,23 +4,58 @@ include "components/header.php";
 include "components/navbar.php";
 
 require 'db.php';
+//problème ne peut pas trouver le user id alors que le user est co est que la sessione est start
 
+
+// Check if 'likes' column exists in 'post' table
 $existingColumns = $db->query("DESCRIBE post")->fetchAll(PDO::FETCH_COLUMN);
 if (!in_array('likes', $existingColumns)) {
-    // Add likes column if not exists
+    // Add 'likes' column if it does not exist
     $sql = "ALTER TABLE post ADD COLUMN likes INT DEFAULT 0";
     $db->exec($sql);
 }
 
+
 // Check if a like is submitted
 if (isset($_POST['like']) && isset($_POST['post_id'])) {
     $postId = $_POST['post_id'];
+    $userId = $_SESSION['user']['id']; // Assuming user ID is stored in session
 
-    // Update the like count in the database
-    $sql = "UPDATE post SET likes = likes + 1 WHERE id = :post_id";
+    // Check if user has already liked the post
+    $sql = "SELECT * FROM post_likes WHERE post_id = :post_id AND user_id = :user_id";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':post_id', $postId);
+    $stmt->bindParam(':user_id', $userId);
     $stmt->execute();
+    $like = $stmt->fetch();
+
+    if ($like) {
+        // User has already liked the post, so remove the like
+        $sql = "DELETE FROM post_likes WHERE post_id = :post_id AND user_id = :user_id";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':post_id', $postId);
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+
+        // Decrease the like count in the 'post' table
+        $sql = "UPDATE post SET likes = likes - 1 WHERE id = :post_id";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':post_id', $postId);
+        $stmt->execute();
+    } else {
+        // User has not liked the post yet, so add a like
+        $sql = "INSERT INTO post_likes (post_id, user_id) VALUES (:post_id, :user_id)";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':post_id', $postId);
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+
+        // Increase the like count in the 'post' table
+        $sql = "UPDATE post SET likes = likes + 1 WHERE id = :post_id";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':post_id', $postId);
+        $stmt->execute();
+    }
 }
 
 // Fetch posts from the database
@@ -105,12 +140,13 @@ if (!empty($_POST)) {
         <div class="post-content pers_align is-justify-content-center is-align-items-center pb-3">
             <div class="description pb-3">
                 <p><?= strip_tags($post->post_description) ?></p>
-                <p>Crée le : <i><?= $post->created_at ?></i></p>
+                <p>Created on: <i><?= $post->created_at ?></i></p>
             </div>
             <div class=<?php if ($post->media === null){echo ' is-hidden';} else{echo 'column is-three-quarters assets pb-3 assets image';} ?>>
                 <img src="<?= $post->media ?>" alt="" class="" style="max-height: 25rem; object-fit: cover;">
             </div>
         </div>
+        <?php if (isset($_SESSION["user"])): ?>
         <div class="post_footer container is-three-quarters">
             <form method="post" class="is-flex is-align-items-center is-flex-direction-row">
                 <input type="hidden" name="post_id" value="<?= $post->id ?>">
@@ -123,6 +159,20 @@ if (!empty($_POST)) {
                 <img src="assets/comment.svg" alt="">
             </a>
         </div>
+        <?php else: ?>
+            <div class="post_footer container is-three-quarters">
+            <form class="is-flex is-align-items-center is-flex-direction-row">
+                <input type="hidden" name="post_id" value="<?= $post->id ?>">
+                <a name="like" class="like image is-32x32" href="login.php">
+                    <img src="assets/heart.svg" alt="">
+                </a>
+                <span class="pl-3"><?= $post->likes ?> likes</span>
+            </form>
+            <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
+                <img src="assets/comment.svg" alt="">
+            </a>
+        </div>
+        <?php endif; ?>
     </div>
     <span class="lower_border has-border-bottom"></span>
     <?php endforeach; ?>

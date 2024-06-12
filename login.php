@@ -31,7 +31,7 @@ if (!empty($_POST)) {
         if (password_verify($_POST["password"], $user->password)) {
           session_start();
           $_SESSION["user"] = [
-            "id" => $user->id,
+            "id" => $user->user_id,
             "username" => $user->username,
             "email" => $user->email,
             "profile_pic" => $user->profile_pic,
