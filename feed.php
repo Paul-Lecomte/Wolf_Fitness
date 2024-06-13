@@ -197,7 +197,6 @@ if (!empty($_POST)) {
         </div>
     </form>
 </div>
-
 <?php
 include "components/footer.php";
 ?>

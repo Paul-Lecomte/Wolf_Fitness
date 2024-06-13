@@ -1,3 +1,6 @@
+@charset "utf-8"; 
+@import "../node_modules/bulma/css/bulma.css"; 
+
 * {
   padding: 0;
   margin: 0;
@@ -102,7 +105,7 @@ textarea{
 
 /*Footer-------------------------------------------------------------------*/
 .pers-footer{
-  background-color: #14161ab2 !important;
+  background-color: #14161a !important;
 }
 
 /*Feed----------------------------------------------------------------------*/
@@ -178,3 +181,6 @@ textarea{
     margin-left: 20px;
     font-weight: bolder;
   }
+
+/*profile---------------------------------------------------------------*/
+  

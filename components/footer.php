@@ -1,5 +1,5 @@
 <!-- Footer ----------------------------------------------------------------------------->
-      <footer id="footer">
+      <footer id="footer" style="background-color: #14161a">
         <nav class="pers-footer navbar pers_navbar  mt-2">
           <div class="m-0 my-3 columns" style="width:100%">
             <a class="home has-text-centered column is-one-quarter img is-32x32" href="feed.php">
