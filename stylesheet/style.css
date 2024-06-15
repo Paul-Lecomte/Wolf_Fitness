@@ -116,9 +116,9 @@ textarea{
   align-items: center;
 }
 
-.lower_border{
+span .lower_border{
   width: 100%;
-  border: 1px solid #7D7D7D;
+  border-color: #7D7D7D;
 }
 
 .assets img{

@@ -9,10 +9,12 @@
               </p>
             </a>
             <button class="search has-text-centered column is-one-quarter img is-32x32" onclick="">
-              <img src="assets/magnifier.svg" alt="Search button">
-              <p>
-                Search
-              </p>
+              <a href="search.php">
+                <img src="assets/magnifier.svg" alt="Search button">
+                <p>
+                  Search
+                </p>
+              </a>
             </button>
             <?php if (isset($_SESSION["user"])): ?>
             <button type="button" class="post has-text-centered column is-one-quarter img is-32x32">
@@ -54,4 +56,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
     <script src="js/footer.js"></script>
     <script src="js/animation.js"></script>
+    <script src="js/profile.js"></script>
   </body>
