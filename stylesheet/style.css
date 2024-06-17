@@ -138,7 +138,7 @@ span .lower_border{
     position: absolute;
     top: 0;
     left: 0;
-    background: grey;
+    color: black;
     height: 100%;
     width: 100%;
     display: flex;
@@ -146,13 +146,11 @@ span .lower_border{
     gap: 1.5rem;
     align-items: center;
     justify-content: center;
-    color: #191654;
   }
 
   #svg {
     height: 100%;
     width: 100%;
-    stroke: black;
     fill-opacity: 0.4;
     stroke-width: 3px;
     stroke-dasharray: 4500;

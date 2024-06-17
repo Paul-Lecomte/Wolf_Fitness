@@ -123,7 +123,7 @@ if (!empty($_POST)) {
         </div>
         <?php endif; ?>
     </div>
-    <span class="lower_border has-border-bottom" style="border: 1px solid #7D7D7D;"></span>
+    <span class="lower_border has-border-bottom" style="border: 1px solid #7D7D7D; width: 100%;"></span>
     <?php endforeach; ?>
 </div>
 <!-- New post ----------------------------------------------------------------------------->

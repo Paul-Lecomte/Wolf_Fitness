@@ -1,7 +1,7 @@
 <!-- Header ----------------------------------------------------------------------------->
 <nav class="navbar pers_navbar" style="width:100%">
         <a href="feed.php" class="logo py-3" >
-          <img class="ml-6 image is-64x64" src="./assets/logo.svg" alt="wolf fitness logo">
+          <img class="ml-6 image is-64x64" src="assets/logo.svg" alt="wolf fitness logo">
         </a>
         <div class="navbar-end">
             <div class="navbar-item">
