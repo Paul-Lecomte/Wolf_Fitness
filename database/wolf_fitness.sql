@@ -32,6 +32,25 @@ CREATE TABLE IF NOT EXISTS `comment` (
 
 -- Les données exportées n'étaient pas sélectionnées.
 
+-- Listage de la structure de table wolf_fitness. exercice
+CREATE TABLE IF NOT EXISTS `exercice` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8mb4_bin NOT NULL DEFAULT '?',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Les données exportées n'étaient pas sélectionnées.
+
+-- Listage de la structure de table wolf_fitness. exercicespec
+CREATE TABLE IF NOT EXISTS `exercicespec` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `reps` varchar(50) COLLATE utf8mb4_bin NOT NULL DEFAULT '?',
+  `weight` varchar(50) COLLATE utf8mb4_bin NOT NULL DEFAULT '?',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Les données exportées n'étaient pas sélectionnées.
+
 -- Listage de la structure de table wolf_fitness. post
 CREATE TABLE IF NOT EXISTS `post` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -43,7 +62,31 @@ CREATE TABLE IF NOT EXISTS `post` (
   `pp_user` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '""',
   `likes` int DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Les données exportées n'étaient pas sélectionnées.
+
+-- Listage de la structure de table wolf_fitness. post_likes
+CREATE TABLE IF NOT EXISTS `post_likes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `post_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `post_id` (`post_id`,`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Les données exportées n'étaient pas sélectionnées.
+
+-- Listage de la structure de table wolf_fitness. training
+CREATE TABLE IF NOT EXISTS `training` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) COLLATE utf8mb4_bin DEFAULT NULL,
+  `creator` varchar(250) COLLATE utf8mb4_bin NOT NULL DEFAULT '""',
+  `description` text COLLATE utf8mb4_bin NOT NULL,
+  `nbrExercices` int NOT NULL DEFAULT '0',
+  `created_at` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 
@@ -53,10 +96,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `bio` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '""',
+  `bio` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT 'empty bio',
   `profile_pic` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 
