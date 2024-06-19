@@ -1,8 +1,13 @@
 <?php
 $title = "Feed";
-include "components/header.php";
-include "components/navbar.php";
-require "db.php";
+include "../../components/header.php";
+include "../../components/navbar.php";
+require "../../components/db.php";
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION["user"])) {
+    header("Location: ../credential/login.php");
+    exit();
+}
 
 $user_id = $_SESSION['user']["id"];
 $username = $_SESSION['user']["username"];
@@ -34,7 +39,7 @@ $liked_posts_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $liked_posts_stmt->execute();
 $liked_posts = $liked_posts_stmt->fetchAll(PDO::FETCH_OBJ);
 
-include "components/likes.php";
+include "../../components/likes.php";
 ?>
 
 <div class="css_post container columns is-flex-direction-column is-align-items-center is-full my-6 box">
@@ -54,7 +59,7 @@ include "components/likes.php";
     <?php if (isset($_SESSION["user"]) && $_SESSION["user"]["id"] === $user_id): ?>
         <a href="update_profile.php" class="button is-warning is-light column is-align-items-center is-justify-content-center">Modifier</a>
     <?php else : ?>
-        <a href="feed.php" class="button is-primary is-light">retour</a>
+        <a href="../feed/feed.php" class="button is-primary is-light">retour</a>
     <?php endif;?>
 </div>
 <div>
@@ -89,25 +94,25 @@ include "components/likes.php";
                         <form method="post" class="is-flex is-align-items-center is-flex-direction-row">
                             <input type="hidden" name="post_id" value="<?= $post->id ?>">
                             <button type="submit" name="like" class="like image is-32x32">
-                                <img src="assets/heart.svg" alt="">
+                                <img src="../../assets/heart.svg" alt="">
                             </button>
                             <span class="pl-3"><?= $post->likes ?> likes</span>
                         </form>
-                        <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
-                            <img src="assets/comment.svg" alt="">
+                        <a class="comment image is-32x32" href="../posts/post.php?id=<?= $post->id ?>">
+                            <img src="../../assets/comment.svg" alt="">
                         </a>
                     </div>
                     <?php else: ?>
                     <div class="post_footer container is-three-quarters">
                         <form class="is-flex is-align-items-center is-flex-direction-row">
                             <input type="hidden" name="post_id" value="<?= $post->id ?>">
-                            <a name="like" class="like image is-32x32" href="login.php">
-                                <img src="assets/heart.svg" alt="">
+                            <a name="like" class="like image is-32x32" href="../credential/login.php">
+                                <img src="../../assets/heart.svg" alt="">
                             </a>
                             <span class="pl-3"><?= $post->likes ?> likes</span>
                         </form>
-                        <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
-                            <img src="assets/comment.svg" alt="">
+                        <a class="comment image is-32x32" href="../posts/post.php?id=<?= $post->id ?>">
+                            <img src="../../assets/comment.svg" alt="">
                         </a>
                     </div>
                     <?php endif; ?>
@@ -143,25 +148,25 @@ include "components/likes.php";
                         <form method="post" class="is-flex is-align-items-center is-flex-direction-row">
                             <input type="hidden" name="post_id" value="<?= $post->id ?>">
                             <button type="submit" name="like" class="like image is-32x32">
-                                <img src="assets/heart.svg" alt="">
+                                <img src="../../assets/heart.svg" alt="">
                             </button>
                             <span class="pl-3"><?= $post->likes ?> likes</span>
                         </form>
-                        <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
-                            <img src="assets/comment.svg" alt="">
+                        <a class="comment image is-32x32" href="../posts/post.php?id=<?= $post->id ?>">
+                            <img src="../../assets/comment.svg" alt="">
                         </a>
                     </div>
                     <?php else: ?>
                     <div class="post_footer container is-three-quarters">
                         <form class="is-flex is-align-items-center is-flex-direction-row">
                             <input type="hidden" name="post_id" value="<?= $post->id ?>">
-                            <a name="like" class="like image is-32x32" href="login.php">
-                                <img src="assets/heart.svg" alt="">
+                            <a name="like" class="like image is-32x32" href="../credential/login.php">
+                                <img src="../../assets/heart.svg" alt="">
                             </a>
                             <span class="pl-3"><?= $post->likes ?> likes</span>
                         </form>
                         <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
-                            <img src="assets/comment.svg" alt="">
+                            <img src="../../assets/comment.svg" alt="">
                         </a>
                     </div>
                     <?php endif; ?>
@@ -174,5 +179,6 @@ include "components/likes.php";
 
 
 <?php
-include "components/footer.php";
+include "../../components/footer.php";
 ?>
+ <script src="../../js/profile.js"></script>

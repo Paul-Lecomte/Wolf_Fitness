@@ -1,5 +1,5 @@
 <?php
-include 'components/header.php';
+include '../../components/header.php';
 
 //on vàrifie que le form ne soit pas vide
 if (!empty($_POST)) {
@@ -13,7 +13,7 @@ if (!empty($_POST)) {
 
         //on peut enregistrer notre user
         //on se co a la db
-        require_once "db.php";
+        require_once "../../components/db.php";
 
         //Requête préparé
         $sql = "SELECT * FROM users WHERE email = :email";
@@ -36,7 +36,7 @@ if (!empty($_POST)) {
             "email" => $user->email,
             "profile_pic" => $user->profile_pic,
           ];
-          header("Location: feed.php");
+          header("Location: ../feed/feed.php");
           exit();
         } else {
           die("information de connexion incorrect");
@@ -50,7 +50,7 @@ if (!empty($_POST)) {
 }
 ?>
     <div class="logo container my-6 pers_align">
-      <img style="max-width: 20%" src="assets/logo.svg" alt="wolf fitness logo">
+      <img style="max-width: 20%" src="../../assets/logo.svg" alt="wolf fitness logo">
     </div>
     <form method="post">
       <div class="columns is-max-desktop pers_align">
@@ -73,8 +73,5 @@ if (!empty($_POST)) {
         
       </div>
     </form>
-    
-    
-    
   </body>
 </html>

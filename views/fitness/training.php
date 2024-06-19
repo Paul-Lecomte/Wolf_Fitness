@@ -1,8 +1,13 @@
 <?php
 $title = "Training Details";
-include "components/header.php";
-include "components/navbar.php";
-require "db.php";
+include "../../components/header.php";
+include "../../components/navbar.php";
+require "../../components/db.php";
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION["user"])) {
+    header("Location: ../credential/login.php");
+    exit();
+}
 
 // Get the training ID from the URL
 $training_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -15,7 +20,7 @@ $training = $req->fetch();
 
 if (!$training) {
     echo "Training not found!";
-    include "components/footer.php";
+    include "../../components/footer.php";
     exit;
 }
 
@@ -47,20 +52,20 @@ $exercices = $req->fetchAll();
 </div>
 
 <!-- List of exercises in this training -->
-<div class="">
-    <ul class="column is-flex-direction-column">
+<div class="container">
+    <ul class="columns is-flex-direction-column is-centered">
         <?php foreach ($exercices as $exercice) : ?>
         <li class="column ml-3 is-one-fifth">
-            <a href="#" class="is-flex is-flex-direction-row is-align-items-center">
-                <img src="assets/round.svg" alt="">
+            <a href="exercices.php?id=<?= $exercice->id ?>" class="is-flex is-flex-direction-row is-align-items-center">
+                <img src="../../assets/round.svg" alt="">
                 <p class="ml-2"><?= htmlspecialchars($exercice->name) ?></p>
-                <p class="ml-2"><?= htmlspecialchars($exercice->description) ?></p>
+                <p><?= $exercice->id ?></p>
             </a>
         </li>
         <?php endforeach; ?>
         <li>
             <a href="#" id="add-exercise" class="column ml-3 is-one-fifth">
-                <img src="assets/add.svg" alt="">
+                <img src="../../assets/add.svg" alt="">
             </a>
         </li>
     </ul>
@@ -95,8 +100,8 @@ $exercices = $req->fetchAll();
 </div>
 
 <?php
-include "components/footer.php";
+include "../../components/footer.php";
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
-<script src="js/add_exercices.js"></script>
+<script src="../../js/add_exercices.js"></script>

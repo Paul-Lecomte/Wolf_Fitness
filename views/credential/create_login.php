@@ -1,5 +1,5 @@
 <?php
-include 'components/header.php';
+include '../../components/header.php';
 
 // Check if the form is submitted
 if (!empty($_POST)) {
@@ -41,7 +41,7 @@ if (!empty($_POST)) {
         // Create a unique image name
         $image_name = bin2hex(random_bytes(16)) . $image_extension;
         // Move the temp image file to the uploads directory
-        $mediaPath = "uploads/" . $image_name;
+        $mediaPath = "../../uploads/" . $image_name;
         if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
             die('Failed to move uploaded file.');
         }
@@ -50,7 +50,7 @@ if (!empty($_POST)) {
         $password = password_hash($_POST["password"], PASSWORD_ARGON2ID);
 
         // Connect to the database
-        require_once "db.php";
+        require_once "../../components/db.php";
 
         // Insert the user into the database
         $sql = "INSERT INTO users (username, email, password, profile_pic) VALUES (:username, :email, :password, :profile_pic)";
@@ -74,7 +74,7 @@ if (!empty($_POST)) {
         ];
 
         // Redirect the user to the feed page
-        header("Location: feed.php");
+        header("Location: ../feed/feed.php");
         exit();
     } else {
         die("Le formulaire est incomplet");
@@ -83,7 +83,7 @@ if (!empty($_POST)) {
 ?>
 
 <div class="logo container my-6 pers_align">
-    <img style="max-width: 20%" src="assets/logo.svg" alt="wolf fitness logo">
+    <img style="max-width: 20%" src="../../assets/logo.svg" alt="wolf fitness logo">
 </div>
 <form method="post" enctype="multipart/form-data">
     <div class="columns is-flex is-align-items-center is-justify-content-center is-flex-direction-column is-max-desktop">

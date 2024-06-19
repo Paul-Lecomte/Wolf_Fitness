@@ -1,7 +1,7 @@
 <?php
 
-include "components/header.php";
-include "components/navbar.php";
+include "../../components/header.php";
+include "../../components/navbar.php";
 
 //On vérifie si on recoit un id de la part de post.php
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -12,7 +12,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 //ici j'ai un id
 $id =$_GET['id'];
 
-require_once "db.php";
+require_once "../../components/db.php";
 //on récupère le post grace a son id dans une rquête prépaér
 $sql = "SELECT * FROM post WHERE id = :id";
 $req = $db->prepare($sql);
@@ -27,7 +27,7 @@ $req->bindValue(':post_id', $id, PDO::PARAM_INT);
 $req->execute();
 $comments = $req->fetchAll(PDO::FETCH_OBJ);
 
-include "components/likes.php";
+include "../../components/likes.php";
 
 if (!empty($_POST)) {
   if (isset($_POST['content']) && !empty($_POST['content'])) {
@@ -39,7 +39,7 @@ if (!empty($_POST)) {
       $postCreated_at = date("Y-m-d H:i:s");
       //on peut enregistré les donnés
       //on se co a la base de donné
-      require_once "db.php";
+      require_once "../../components/db.php";
       //SQL pour la requête préparé
       $sql = "INSERT INTO comment (comment_description, created_at, post_id, comment_author, comment_pp) VALUES (:comment_description, :created_at, :post_id, :comment_author, :comment_pp)";
       //on prépare la requete
@@ -95,24 +95,24 @@ if (!$post){
           <div class="post_footer container is-three-quarters">
               <?php if (isset($_SESSION["user"])): ?>
               <a class="comment image is-32x32" onclick="newPost()">
-                <img src="assets/comment.svg" alt="">
+                <img src="../../assets/comment.svg" alt="">
               </a>
               <button type="submit" name="like" class="like image is-32x32">
-                <img src="assets/heart.svg" alt="">
+                <img src="../../assets/heart.svg" alt="">
               </button>
               <?php else: ?>
-              <a class="comment image is-32x32" href="login.php">
-                <img src="assets/comment.svg" alt="">
+              <a class="comment image is-32x32" href="../profile/login.php">
+                <img src="../../assets/comment.svg" alt="">
               </a>
-              <a name="like" class="like image is-32x32" href="login.php">
-                <img src="assets/heart.svg" alt="">
+              <a name="like" class="like image is-32x32" href="../profile/login.php">
+                <img src="../../assets/heart.svg" alt="">
               </a>
               <?php endif;?>
               <?php if (isset($_SESSION["user"]) && $_SESSION["user"]["username"] === $post->post_author): ?>
                 <a href="update_post.php?id=<?= $post->id ?>" class="button is-warning is-light">Modifier</a>
                 <a href="delete_post.php?id=<?= $post->id ?>" class="button is-danger is-light ">Supprimer</a>
               <?php else : ?>
-                <a href="feed.php" class="button is-primary is-light">retour</a>
+                <a href="../feed/feed.php" class="button is-primary is-light">retour</a>
               <?php endif;?>
           </div>
         </div>
@@ -137,7 +137,7 @@ if (!$post){
           </div>
           <div class="post_footer container is-three-quarters">
               <button class="like image is-32x32">
-                <img src="assets/heart.svg" alt="">
+                <img src="../../assets/heart.svg" alt="">
               </button>
           </div>
         </div>
@@ -160,5 +160,5 @@ if (!$post){
           </form>
         </div>
 <?php
-include "components/footer.php";
+include "../../components/footer.php";
 ?>

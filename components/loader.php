@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Loading Wolf Fitness</title>
-    <link rel="stylesheet" href="stylesheet/style.css">
+    <link rel="stylesheet" href="../stylesheet/style.css">
     <link rel="stylesheet" href="https://use.typekit.net/kyn8vvk.css">
   </head>
   <body>
@@ -28,6 +28,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"
         integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="js/index.js"></script>
+    <script src="../js/index.js"></script>
   </body>
 </html>

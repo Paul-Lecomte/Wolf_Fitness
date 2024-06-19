@@ -2,11 +2,16 @@
 
 // Start the session
 session_start();
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION["user"])) {
+    header("Location: ../credential/login.php");
+    exit();
+}
 
 // Check if an ID is received from post.php
 if (!isset($_GET["id"]) || empty($_GET["id"])) {
     // No ID received, redirect to feed.php
-    header("Location: feed.php");
+    header("Location: ../feed/feed.php");
     exit();
 }
 
@@ -14,7 +19,7 @@ if (!isset($_GET["id"]) || empty($_GET["id"])) {
 $id = $_GET["id"];
 
 // Connect to the database
-require_once "db.php";
+require_once "../../components/db.php";
 
 // Retrieve the post
 $sql = "SELECT * FROM post WHERE id = :id";
@@ -48,7 +53,7 @@ if ($_SESSION["user"]["username"] == $post->post_author) {
             // Execute the deletion query
             if ($req->execute()) {
                 // Post deleted successfully, redirect to the feed
-                header("Location: feed.php");
+                header("Location: ../feed/feed.php");
                 exit();
             } else {
                 // Error deleting post from database
@@ -67,7 +72,7 @@ if ($_SESSION["user"]["username"] == $post->post_author) {
         // Execute the deletion query
         if ($req->execute()) {
             // Post deleted successfully, redirect to the feed
-            header("Location: feed.php");
+            header("Location: ../feed/feed.php");
             exit();
         } else {
             // Error deleting post from database
@@ -76,7 +81,7 @@ if ($_SESSION["user"]["username"] == $post->post_author) {
     }
 } else {
     // Post does not belong to the user, redirect to the feed
-    header("Location: feed.php");
+    header("Location: ../feed/feed.php");
     exit();
 }
 

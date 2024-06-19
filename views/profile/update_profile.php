@@ -1,11 +1,11 @@
 <?php
-include "components/header.php";
-include "components/navbar.php";
-require "db.php";
+include "../../components/header.php";
+include "../../components/navbar.php";
+require "../../components/db.php";
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION["user"])) {
-    header("Location: login.php");
+    header("Location: ../credential/login.php");
     exit();
 }
 
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $image_extension = image_type_to_extension($image_type, true);
             $image_name = bin2hex(random_bytes(16)) . $image_extension;
-            $profilePicPath = "uploads/" . $image_name;
+            $profilePicPath = "../../uploads/" . $image_name;
             if (!move_uploaded_file($image_file["tmp_name"], $profilePicPath)) {
                 die('Échec du déplacement du fichier uploadé.');
             }

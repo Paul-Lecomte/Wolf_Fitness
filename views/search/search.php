@@ -1,9 +1,9 @@
 <?php
 $title = "Feed";
-include "components/header.php";
-include "components/navbar.php";
+include "../../components/header.php";
+include "../../components/navbar.php";
 
-require 'db.php';
+require '../../components/db.php';
 $results = [];
 if (isset($_GET['query'])) {
     $query = $_GET['query'];
@@ -11,7 +11,7 @@ if (isset($_GET['query'])) {
     $stmt->execute(["%$query%"]);
     $results = $stmt->fetchAll(PDO::FETCH_OBJ);
 }
-include "components/likes.php";
+include "../../components/likes.php";
 ?>
 
 <form method="GET" class="m-3 is-flex is-justify-content-center">
@@ -52,12 +52,12 @@ include "components/likes.php";
                     <form method="post" class="is-flex is-align-items-center is-flex-direction-row">
                         <input type="hidden" name="post_id" value="<?= $post->id ?>">
                         <button type="submit" name="like" class="like image is-32x32">
-                            <img src="assets/heart.svg" alt="">
+                            <img src="../../assets/heart.svg" alt="">
                         </button>
                         <span class="pl-3"><?= $post->likes ?> likes</span>
                     </form>
                     <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
-                        <img src="assets/comment.svg" alt="">
+                        <img src="../../assets/comment.svg" alt="">
                     </a>
                 </div>
             <?php else: ?>
@@ -65,12 +65,12 @@ include "components/likes.php";
                     <form class="is-flex is-align-items-center is-flex-direction-row">
                         <input type="hidden" name="post_id" value="<?= $post->id ?>">
                         <a name="like" class="like image is-32x32" href="login.php">
-                            <img src="assets/heart.svg" alt="">
+                            <img src="../../assets/heart.svg" alt="">
                         </a>
                         <span class="pl-3"><?= $post->likes ?> likes</span>
                     </form>
                     <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
-                        <img src="assets/comment.svg" alt="">
+                        <img src="../../assets/comment.svg" alt="">
                     </a>
                 </div>
             <?php endif; ?>
@@ -82,5 +82,5 @@ include "components/likes.php";
 <?php endif; ?>
 
 <?php
-include "components/footer.php";
+include "../../components/footer.php";
 ?>

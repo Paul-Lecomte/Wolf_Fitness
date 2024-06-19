@@ -1,13 +1,18 @@
 <?php
 $title = "Feed";
-include "components/header.php";
-include "components/navbar.php";
-require "db.php";
+include "../../components/header.php";
+include "../../components/navbar.php";
+require "../../components/db.php";
 // Create a new training session
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION["user"])) {
+    header("Location: ../credential/login.php");
+    exit();
+}
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['training_name'])) {
     $training_name = $_POST['training_name'];
     $description = $_POST['description'];
-    $creator = $_SESSION['username'];
+    $creator = $_SESSION['user']['username'];
     $sql = "INSERT INTO training (name, creator, description) VALUES ('$training_name', '$creator', '$description')";
     $db->query($sql);
 }
@@ -19,23 +24,26 @@ $trainings = $req->fetchAll();
 ?>
 
 <!-- Form to create a new training session -->
-<form method="POST" class="box my-6">
-    <div class="field">
-        <label class="label">Training Name</label>
-        <div class="control">
-            <input class="input" type="text" name="training_name" placeholder="Training Name" required>
+<div class="columns is-justify-content-center">
+    <form method="POST" class="box my-6 column is-half">
+        <div class="field">
+            <label class="label">Training Name</label>
+            <div class="control">
+                <input class="input" type="text" name="training_name" placeholder="Training Name" required>
+            </div>
         </div>
-    </div>
-    <div class="field">
-        <label class="label">Description</label>
-        <div class="control">
-            <textarea class="textarea" name="description" placeholder="Description" required></textarea>
+        <div class="field">
+            <label class="label">Description</label>
+            <div class="control">
+                <textarea class="textarea" name="description" placeholder="Description" required></textarea>
+            </div>
         </div>
-    </div>
-    <div class="control">
-        <button class="button is-primary" type="submit">Create Training</button>
-    </div>
-</form>
+        <div class="control">
+            <button class="button is-primary" type="submit">Create Training</button>
+        </div>
+    </form>
+</div>
+
 
 <!-- List of existing training sessions -->
 <?php foreach ($trainings as $training) : ?>
@@ -58,5 +66,5 @@ $trainings = $req->fetchAll();
 <?php endforeach; ?>
 
 <?php
-include "components/footer.php";
+include "../../components/footer.php";
 ?>

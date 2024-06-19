@@ -1,12 +1,17 @@
 <?php
 
-include "components/header.php";
-include "components/navbar.php";
+include "../../components/header.php";
+include "../../components/navbar.php";
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION["user"])) {
+    header("Location: ../credential/login.php");
+    exit();
+}
 
 //On vérifie si on reçoit un ID de la part du post
 if(!isset($_GET["id"]) || empty($_GET["id"])) {
     //Ici je n'ai pas reçu d'ID, donc je redirige l'utilisateur
-    header("Location: feed.php");
+    header("Location: ../feed/feed.php");
     exit();
 }
 
@@ -14,7 +19,7 @@ if(!isset($_GET["id"]) || empty($_GET["id"])) {
 $id = $_GET["id"];
 
 //On se connecte à la BDD
-require_once "db.php";
+require_once "../../components/db.php";
 
 //On récupère l'article qu'on souhaite modifier dans la BDD avec un requête
 $sql = "SELECT * FROM post WHERE id = :id";
@@ -62,7 +67,7 @@ if($_SESSION["user"]["username"] == $post->post_author) {
             
                 $image_extension = image_type_to_extension($image_type, true);
                 $image_name = bin2hex(random_bytes(16)) . $image_extension;
-                $mediaPath = "uploads/" . $image_name;
+                $mediaPath = "../../uploads/" . $image_name;
                 if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
                     die('Failed to move uploaded file.');
                 }
@@ -86,13 +91,13 @@ if($_SESSION["user"]["username"] == $post->post_author) {
             }
 
             //Ici on a réussi à modifier le post
-            header("Location: feed.php");
+            header("Location: ../feed/feed.php");
         }
     }
 
 
 } else {
-    header("Location: feed.php");
+    header("Location: ../feed/feed.php");
 }
 ?>
     <div class="p-3">

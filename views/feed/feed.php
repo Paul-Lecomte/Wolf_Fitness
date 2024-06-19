@@ -1,11 +1,11 @@
 <?php
 $title = "Feed";
-include "components/header.php";
-include "components/navbar.php";
+include "../../components/header.php";
+include "../../components/navbar.php";
 
-require 'db.php';
+require '../../components/db.php';
 
-include "components/likes.php";
+include "../../components/likes.php";
 
 // Fetch posts from the database
 $sql = "SELECT * FROM post ORDER BY created_at DESC";
@@ -46,14 +46,14 @@ if (!empty($_POST)) {
 
             $image_extension = image_type_to_extension($image_type, true);
             $image_name = bin2hex(random_bytes(16)) . $image_extension;
-            $mediaPath = "uploads/" . $image_name;
+            $mediaPath = "../../uploads/" . $image_name;
             if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
                 die('Failed to move uploaded file.');
             }
         }
 
         // Insert data into the database
-        require_once "db.php";
+        require_once "../../components/db.php";
         $sql = "INSERT INTO post (post_description, created_at, media, post_author, pp_user) VALUES (:post_description, :created_at, :media, :post_author, :pp_user)";
         $req = $db->prepare($sql);
         $req->bindParam(":media", $mediaPath);
@@ -64,11 +64,11 @@ if (!empty($_POST)) {
         if (!$req->execute()) {
             die("Post request failed");
         } else {
-            header("Location: feed.php");
+            header("Location: ../feed/feed.php");
             exit();
         }
     } else {
-        header("Location: feed.php");
+        header("Location: ../feed/feed.php");
         die("Please provide content or upload a file.");
     }
 }
@@ -100,12 +100,12 @@ if (!empty($_POST)) {
             <form method="post" class="is-flex is-align-items-center is-flex-direction-row">
                 <input type="hidden" name="post_id" value="<?= $post->id ?>">
                 <button type="submit" name="like" class="like image is-32x32">
-                    <img src="assets/heart.svg" alt="">
+                    <img src="../../assets/heart.svg" alt="">
                 </button>
                 <span class="pl-3"><?= $post->likes ?> likes</span>
             </form>
-            <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
-                <img src="assets/comment.svg" alt="">
+            <a class="comment image is-32x32" href="../posts/post.php?id=<?= $post->id ?>">
+                <img src="../../assets/comment.svg" alt="">
             </a>
         </div>
         <?php else: ?>
@@ -117,8 +117,8 @@ if (!empty($_POST)) {
                 </a>
                 <span class="pl-3"><?= $post->likes ?> likes</span>
             </form>
-            <a class="comment image is-32x32" href="post.php?id=<?= $post->id ?>">
-                <img src="assets/comment.svg" alt="">
+            <a class="comment image is-32x32" href="../posts/post.php?id=<?= $post->id ?>">
+                <img src="../../assets/comment.svg" alt="">
             </a>
         </div>
         <?php endif; ?>
@@ -147,5 +147,5 @@ if (!empty($_POST)) {
     </form>
 </div>
 <?php
-include "components/footer.php";
+include "../../components/footer.php";
 ?>
