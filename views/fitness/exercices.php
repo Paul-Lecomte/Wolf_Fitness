@@ -12,7 +12,7 @@ if (!isset($_SESSION["user"])) {
 $id = $_GET['id'] ?? 0;
 
 // Fetch exercise details
-$sql = "SELECT name FROM exercice WHERE id = :id";
+$sql = "SELECT name, description FROM exercice WHERE id = :id";
 $req = $db->prepare($sql);
 $req->bindValue(':id', $id, PDO::PARAM_INT);
 $req->execute();
@@ -74,27 +74,32 @@ $req->execute();
 $exercisesSpec = $req->fetchAll();
 ?>
 
-<div>
-    <h1 class="has-text-centered is-size-1">
+<div class="columns is-flex-direction-row">
+    <div class="column is-one-fifth is-flex is-justify-content-center is-align-items-center">
+        <a href="#" onclick="showDescriptionModal('<?= htmlspecialchars($exercice->description) ?>')">
+            <img src="../../assets/question_mark.svg" class="image is-32x32" alt="exercise description">
+        </a>
+    </div>
+    <h1 class="column is-three-fifths has-text-centered is-size-1">
         <?= htmlspecialchars($exercice->name) ?>
     </h1>
 </div>
 <div class="">
     <ul class="column is-flex-direction-column">
         <?php foreach ($exercisesSpec as $exerciseSpec) : ?>
-        <li class="column">
-            <div class="is-flex is-flex-direction-row is-align-items-center is-justify-content-space-evenly">
-                <img src="../../assets/round.svg" alt="">
-                <p><?= htmlspecialchars($exerciseSpec->reps) ?> Reps</p>
-                <p><?= htmlspecialchars($exerciseSpec->weight) ?> Kg</p>
-                <p>Date : <?= htmlspecialchars($exerciseSpec->logged_at) ?></p>
-                <a class="button edit-set" href="#" data-log-id="<?= $exerciseSpec->id ?>" data-reps="<?= $exerciseSpec->reps ?>" data-weight="<?= $exerciseSpec->weight ?>">Edit</a>
-                <form method="POST" action="" style="display:inline;">
-                    <input type="hidden" name="log_id" value="<?= $exerciseSpec->id ?>">
-                    <button class="button is-danger" type="submit" name="delete-set">Delete</button>
-                </form>
-            </div>
-        </li>
+            <li class="column">
+                <div class="is-flex is-flex-direction-row is-align-items-center is-justify-content-space-evenly">
+                    <img src="../../assets/round.svg" alt="">
+                    <p><?= htmlspecialchars($exerciseSpec->reps) ?> Reps</p>
+                    <p><?= htmlspecialchars($exerciseSpec->weight) ?> Kg</p>
+                    <p>Date : <?= htmlspecialchars($exerciseSpec->logged_at) ?></p>
+                    <a class="button edit-set" href="#" data-log-id="<?= $exerciseSpec->id ?>" data-reps="<?= $exerciseSpec->reps ?>" data-weight="<?= $exerciseSpec->weight ?>">Edit</a>
+                    <form method="POST" action="" style="display:inline;">
+                        <input type="hidden" name="log_id" value="<?= $exerciseSpec->id ?>">
+                        <button class="button is-danger" type="submit" name="delete-set">Delete</button>
+                    </form>
+                </div>
+            </li>
         <?php endforeach; ?>
         <li>
             <a href="#" id="log-set" class="column ml-3 is-one-fifth">
@@ -161,8 +166,21 @@ $exercisesSpec = $req->fetchAll();
     <button class="modal-close is-large" aria-label="close"></button>
 </div>
 
+<!-- Modal for exercise description -->
+<div id="exercise-description-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h2 class="title">Exercise Description</h2>
+            <p id="exercise-description-content"></p>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="hideDescriptionModal()"></button>
+</div>
+
 <?php
 include "../../components/footer.php";
 ?>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
-<script src="../../js/log_exercises.js"></script>
+<script src="../../js/info_exercises.js"></script>

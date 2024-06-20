@@ -3,24 +3,30 @@ $title = "Feed";
 include "../../components/header.php";
 include "../../components/navbar.php";
 require "../../components/db.php";
-// Create a new training session
-// Vérifier si l'utilisateur est connecté
+// Ensure the user is logged in
 if (!isset($_SESSION["user"])) {
     header("Location: ../credential/login.php");
     exit();
 }
+
+$user_id = $_SESSION['user']['id']; // Fetch the logged-in user ID from the session
+
+// Create a new training session
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['training_name'])) {
     $training_name = $_POST['training_name'];
     $description = $_POST['description'];
-    $creator = $_SESSION['user']['username'];
-    $sql = "INSERT INTO training (name, creator, description) VALUES ('$training_name', '$creator', '$description')";
-    $db->query($sql);
+    $creator = $_SESSION['user']['username']; // Assuming username is stored in the session
+
+    $sql = "INSERT INTO training (name, creator, description, user_id) VALUES (?, ?, ?, ?)";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([$training_name, $creator, $description, $user_id]);
 }
 
-// Fetch trainings
-$sql = "SELECT * FROM training ORDER BY created_at DESC";
-$req = $db->query($sql);
-$trainings = $req->fetchAll();
+// Fetch trainings created by the logged-in user
+$sql = "SELECT * FROM training WHERE user_id = ? ORDER BY created_at DESC";
+$stmt = $db->prepare($sql);
+$stmt->execute([$user_id]);
+$trainings = $stmt->fetchAll();
 ?>
 
 <!-- Form to create a new training session -->
@@ -43,7 +49,6 @@ $trainings = $req->fetchAll();
         </div>
     </form>
 </div>
-
 
 <!-- List of existing training sessions -->
 <?php foreach ($trainings as $training) : ?>
