@@ -24,7 +24,21 @@ if (!empty($_POST)) {
 
         //si l'email n'existe pas dans bd
         if (!$user) {
-            die("Les info de connection ne sont pas valable");
+            die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR 
+                    <br>
+                    Sorry the information you entered are not valid :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="login.php">
+                    Return
+                </a>
+            </button>
+        </div>');
         }
 
         //ici j'ai un user dans la db donc je dois comparém le mot de passe
@@ -45,7 +59,21 @@ if (!empty($_POST)) {
         
 
     } else {
-        die("formulaire incomplet");
+        die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry the form seems to be incomplete :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="login.php">
+                    Return
+                </a>
+            </button>
+        </div>');
     }
 }
 ?>

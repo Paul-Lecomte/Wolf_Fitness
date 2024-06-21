@@ -32,7 +32,21 @@ $post = $req->fetch();
 if (!$post) {
     // Post not found, return 404 error
     http_response_code(404);
-    echo "Sorry, no post found!";
+    echo '<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR 404 
+                    <br>
+                    Post not found :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="feed.php">
+                    Return
+                </a>
+            </button>
+        </div>';
     exit();
 }
 
@@ -57,11 +71,39 @@ if ($_SESSION["user"]["username"] == $post->post_author) {
                 exit();
             } else {
                 // Error deleting post from database
-                echo "Error deleting post from database.";
+                echo '<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR failed to delete the post
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="feed.php">
+                    Return
+                </a>
+            </button>
+        </div>';
             }
         } else {
             // Error deleting image file
-            echo "Error deleting image file.";
+            echo '<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR failed to delete the image 
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="feed.php">
+                    Return
+                </a>
+            </button>
+        </div>';
         }
     } else {
         // Delete the post from the database without attempting to delete the image file
@@ -76,7 +118,21 @@ if ($_SESSION["user"]["username"] == $post->post_author) {
             exit();
         } else {
             // Error deleting post from database
-            echo "Error deleting post from database.";
+            echo '<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR failed to delete file
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="../feed/feed.php">
+                    Return
+                </a>
+            </button>
+        </div>';
         }
     }
 } else {

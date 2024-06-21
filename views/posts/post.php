@@ -52,7 +52,21 @@ if (!empty($_POST)) {
       $req->bindValue(":comment_pp", $profile_pic);
       //on execute la requête
       if (!$req->execute()) {
-          die("requête post échouer");
+          die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="../feed/feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
       } else {
           //si vous souhaitez l'id du nouveau post crée
           header("Refresh:0");
@@ -60,14 +74,42 @@ if (!empty($_POST)) {
       }
   } else {
       header("Location: feed.php");
-      die("Veuillez remplir tous les champs");
+      die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR 
+                    <br>
+                    Please fill all the form :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="../feed/feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
   }
 }
 
 //on vérifie si le post est vide
 if (!$post){
     http_response_code(404);
-    echo "<div><p>No post found</p><a class='button is-danger' href='feed.php'> Go back </a></div>";
+    echo '<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR 404
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="../feed/feed.php">
+                    Return
+                </a>
+            </button>
+        </div>';
 }
 ?>
 <!-- Post ----------------------------------------------------------------------------->

@@ -1,5 +1,6 @@
 <?php
 include '../../components/header.php';
+require_once "../../components/db.php";
 
 // Check if the form is submitted
 if (!empty($_POST)) {
@@ -7,33 +8,126 @@ if (!empty($_POST)) {
     if (isset($_POST["username"], $_POST["email"], $_POST["password"]) && !empty($_POST["username"]) && !empty($_POST["email"]) && !empty($_POST["password"])) {
         // Get the input values and protect them
         $username = strip_tags($_POST["username"]);
+        $email = $_POST['email'];
+        $sql = "SELECT email FROM users WHERE email = :email";
+        $req = $db->prepare($sql);
+        $req->bindValue(':email', $email);
+        $req->execute();
+        $check_email = $req->fetch(PDO::FETCH_ASSOC);
 
         // Validate the email
         if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-            die("L'adresse email n'est pas valide");
+            die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR email is invalid
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="login.php">
+                    Return
+                </a>
+            </button>
+        </div>');
+        }
+        if ($check_email) {
+            die('<div class="m-3 is-flex is-justify-content-center is-align-items-center is-flex-direction-column">
+                    <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+                    <div class="box">
+                        <p class="has-text-centered is-size-3">
+                            ERROR: Email already in use
+                            <br>
+                            Sorry, something went wrong :/
+                        </p>
+                    </div>
+                    <button>
+                        <a class="button is-size-5" href="login.php">
+                            Return
+                        </a>
+                    </button>
+                </div>');
         }
 
         // Check if a file is uploaded
         if (!isset($_FILES["media"]) || $_FILES["media"]["error"] != UPLOAD_ERR_OK) {
-            die('No file uploaded or there was an error uploading the file.');
+            die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="login.php">
+                    Return
+                </a>
+            </button>
+        </div>');
         }
 
         $image_file = $_FILES["media"];
         
         // Check if the file size is greater than zero bytes
         if (filesize($image_file["tmp_name"]) <= 0) {
-            die('Uploaded file has no contents.');
+            die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR file is empty 
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="login.php">
+                    Return
+                </a>
+            </button>
+        </div>');
         }
 
         // Check if the file is too large (limit to 100 MB here for example)
         if (filesize($image_file["tmp_name"]) > 107374182) { 
-            die('The file uploaded is too large.');
+            die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR the file is too big
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="login.php">
+                    Return
+                </a>
+            </button>
+        </div>');
         }
 
         // Validate the image type
         $image_type = exif_imagetype($image_file["tmp_name"]);
         if (!$image_type) {
-            die('Uploaded file is not an image.');
+            die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR file is not an image
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="login.php">
+                    Return
+                </a>
+            </button>
+        </div>');
         }
 
         // Get file extension based on file type, to prepend a dot we pass true as the second parameter
@@ -43,7 +137,21 @@ if (!empty($_POST)) {
         // Move the temp image file to the uploads directory
         $mediaPath = "../../uploads/" . $image_name;
         if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
-            die('Failed to move uploaded file.');
+            die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR failed to move upload file 
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="login.php">
+                    Return
+                </a>
+            </button>
+        </div>');
         }
 
         // Hash the password
@@ -77,7 +185,21 @@ if (!empty($_POST)) {
         header("Location: ../feed/feed.php");
         exit();
     } else {
-        die("Le formulaire est incomplet");
+        die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry the form seems to be incomplete :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="login.php">
+                    Return
+                </a>
+            </button>
+        </div>');
     }
 }
 ?>

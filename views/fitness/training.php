@@ -20,9 +20,21 @@ $req->execute([$training_id]);
 $training = $req->fetch();
 
 if (!$training) {
-    echo "Training not found!";
-    include "../../components/footer.php";
-    exit;
+    die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR training not found 
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="fitness.php">
+                    Return
+                </a>
+            </button>
+        </div>');
 }
 
 // Handle form submission for adding exercises

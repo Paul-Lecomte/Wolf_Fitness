@@ -28,27 +28,97 @@ if (!empty($_POST)) {
 
             // Validate the uploaded file
             if ($image_file['error'] !== UPLOAD_ERR_OK) {
-                die('Error during file upload.');
+                die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
             }
 
             if (filesize($image_file["tmp_name"]) <= 0) {
-                die('Uploaded file has no contents.');
+                die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry the file seems to be empty :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
             }
 
             if (filesize($image_file["tmp_name"]) > 107374182) { // 100 MB
-                die('The file uploaded is too large.');
+                die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry the file is bigger then 100 MB :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
             }
 
             $image_type = exif_imagetype($image_file["tmp_name"]);
             if (!$image_type) {
-                die('Uploaded file is not an image.');
+                die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
             }
 
             $image_extension = image_type_to_extension($image_type, true);
             $image_name = bin2hex(random_bytes(16)) . $image_extension;
             $mediaPath = "../../uploads/" . $image_name;
             if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
-                die('Failed to move uploaded file.');
+                die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR failed to move upload file 
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
             }
         }
 
@@ -69,7 +139,21 @@ if (!empty($_POST)) {
         }
     } else {
         header("Location: ../feed/feed.php");
-        die("Please provide content or upload a file.");
+        die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
     }
 }
 ?>

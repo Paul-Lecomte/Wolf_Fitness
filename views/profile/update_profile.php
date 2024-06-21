@@ -43,23 +43,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Valider le fichier uploadé
             if ($image_file['error'] !== UPLOAD_ERR_OK) {
-                die('Erreur lors de l\'upload du fichier.');
+                die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="../feed/feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
             }
 
             if (filesize($image_file["tmp_name"]) > 10485760) { // 10 MB
-                die('Le fichier uploadé est trop volumineux.');
+                die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="../feed/feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
             }
 
             $image_type = exif_imagetype($image_file["tmp_name"]);
             if (!$image_type) {
-                die('Le fichier uploadé n\'est pas une image.');
+                die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="../feed/feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
             }
 
             $image_extension = image_type_to_extension($image_type, true);
             $image_name = bin2hex(random_bytes(16)) . $image_extension;
             $profilePicPath = "../../uploads/" . $image_name;
             if (!move_uploaded_file($image_file["tmp_name"], $profilePicPath)) {
-                die('Échec du déplacement du fichier uploadé.');
+                die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="../feed/feed.php">
+                    Return
+                </a>
+            </button>
+        </div>');
             }
 
             if ($old_pp && file_exists($old_pp)) {
@@ -86,7 +142,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         } else {
             http_response_code(500);
-            echo "Désolé, quelque chose n'a pas fonctionné !";
+            echo '<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="../feed/feed.php">
+                    Return
+                </a>
+            </button>
+        </div>';
             exit();
         }
     }
