@@ -3,12 +3,12 @@ $title = "Feed";
 include "../../components/header.php";
 include "../../components/navbar.php";
 require "../../components/db.php";
-// Vérifier si l'utilisateur est connecté
+// check if the user is logged in
 if (!isset($_SESSION["user"])) {
     header("Location: ../credential/login.php");
     exit();
 }
-
+//use the session info for later use
 $user_id = $_SESSION['user']["id"];
 $username = $_SESSION['user']["username"];
 $pp_user = $_SESSION['user']["profile_pic"];

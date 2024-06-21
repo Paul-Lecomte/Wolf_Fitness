@@ -3,7 +3,7 @@ $title = "Feed";
 include "../../components/header.php";
 include "../../components/navbar.php";
 require "../../components/db.php";
-// Ensure the user is logged in
+// check if the user is logged in
 if (!isset($_SESSION["user"])) {
     header("Location: ../credential/login.php");
     exit();

@@ -3,18 +3,18 @@ include "../../components/header.php";
 include "../../components/navbar.php";
 require "../../components/db.php";
 
-// Vérifier si l'utilisateur est connecté
+// check if user is logged in
 if (!isset($_SESSION["user"])) {
     header("Location: ../credential/login.php");
     exit();
 }
 
-// Récupérer l'ID de l'utilisateur à partir de la session
+// get the suer id form the session
 $user_id = $_SESSION['user']["id"];
 $username = $_SESSION['user']["username"];
 $pp_user = $_SESSION['user']["profile_pic"];
 
-// Récupérer les informations de l'utilisateur dans la BDD
+// get the user info from the db
 $sql = "SELECT username, profile_pic, bio FROM users WHERE user_id = :user_id";
 $stmt = $db->prepare($sql);
 $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -26,22 +26,20 @@ if ($user_info) {
     $pp_user = htmlspecialchars($user_info['profile_pic']);
     $bio = htmlspecialchars($user_info['bio']);
     $old_pp = $user_info['profile_pic'];
-} else {
-    $bio = ""; // Définit une valeur par défaut pour éviter l'erreur
 }
 
-// Traiter le formulaire
+// treat the form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST["username"]) && !empty($_POST["bio"])) {
-        // Récupérer les informations du formulaire en les protégeant
+        // get the data from the form and protect it
         $new_username = htmlspecialchars(strip_tags($_POST["username"]));
         $new_bio = htmlspecialchars(strip_tags($_POST["bio"]));
 
-        // Vérifier si un fichier a été uploadé
+        // check if a file was uploaded
         if (isset($_FILES["profile_pic"]) && $_FILES["profile_pic"]["error"] !== UPLOAD_ERR_NO_FILE) {
             $image_file = $_FILES["profile_pic"];
 
-            // Valider le fichier uploadé
+            // validate the uploaded file
             if ($image_file['error'] !== UPLOAD_ERR_OK) {
                 die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
@@ -60,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>');
             }
 
-            if (filesize($image_file["tmp_name"]) > 10485760) { // 10 MB
+            if (filesize($image_file["tmp_name"]) > 107374182) { //100MB
                 die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
             <div class="box">

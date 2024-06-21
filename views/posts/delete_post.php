@@ -2,7 +2,7 @@
 
 // Start the session
 session_start();
-// Vérifier si l'utilisateur est connecté
+// check if the user is logged in
 if (!isset($_SESSION["user"])) {
     header("Location: ../credential/login.php");
     exit();

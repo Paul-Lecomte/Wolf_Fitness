@@ -3,24 +3,24 @@
 include "../../components/header.php";
 include "../../components/navbar.php";
 
-//On vérifie si on recoit un id de la part de post.php
+//we check if we get and id from post.php
 if (!isset($_GET['id']) || empty($_GET['id'])) {
-    //ici je n'ai pas d'id sa renvoie sur la page post
-    header('Location: post.php');
+    //here we don't have an id so we redirect to the feed
+    header('Location: ../feed/feed.php');
     exit();
 }
-//ici j'ai un id
+//here we have an id
 $id =$_GET['id'];
 
 require_once "../../components/db.php";
-//on récupère le post grace a son id dans une rquête prépaér
+//we get the post with the id
 $sql = "SELECT * FROM post WHERE id = :id";
 $req = $db->prepare($sql);
 $req->bindValue(':id', $id, PDO::PARAM_INT);
 $req->execute();
 $post = $req->fetch();
 
-//on récupère les comments avec l'id du poste
+//we get the comments with the post id
 $sql = "SELECT * FROM comment WHERE post_id = :post_id ORDER BY created_at DESC";
 $req = $db->prepare($sql);
 $req->bindValue(':post_id', $id, PDO::PARAM_INT);
@@ -31,26 +31,26 @@ include "../../components/likes.php";
 
 if (!empty($_POST)) {
   if (isset($_POST['content']) && !empty($_POST['content'])) {
-      //ici le formulaire est complet
-      //on récupère les infos rentré par le user en les protégeat contre les failles est les injectons
+      //here the form is complete
+      //we take all the form info and prepare them
       $postContent = strip_tags($_POST['content']);
       $author = $_SESSION['user']["username"];
       $profile_pic = $_SESSION['user']["profile_pic"];
       $postCreated_at = date("Y-m-d H:i:s");
-      //on peut enregistré les donnés
-      //on se co a la base de donné
+      //we can save the data
+      //we connect to the database
       require_once "../../components/db.php";
-      //SQL pour la requête préparé
+      //we make the query to insert the data
       $sql = "INSERT INTO comment (comment_description, created_at, post_id, comment_author, comment_pp) VALUES (:comment_description, :created_at, :post_id, :comment_author, :comment_pp)";
-      //on prépare la requete
+      //we prep the request
       $req = $db->prepare($sql);
-      //on bind les value
+      //we bind the values
       $req->bindValue(":post_id", $id);
       $req->bindValue(":comment_description", $postContent);
       $req->bindValue(":created_at", $postCreated_at);
       $req->bindValue(":comment_author", $author);
       $req->bindValue(":comment_pp", $profile_pic);
-      //on execute la requête
+      //we execute the query
       if (!$req->execute()) {
           die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
@@ -68,7 +68,6 @@ if (!empty($_POST)) {
             </button>
         </div>');
       } else {
-          //si vous souhaitez l'id du nouveau post crée
           header("Refresh:0");
           
       }
@@ -92,7 +91,7 @@ if (!empty($_POST)) {
   }
 }
 
-//on vérifie si le post est vide
+//we check if the post is empty
 if (!$post){
     http_response_code(404);
     echo '<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">

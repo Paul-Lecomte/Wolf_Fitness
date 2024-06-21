@@ -2,26 +2,26 @@
 
 include "../../components/header.php";
 include "../../components/navbar.php";
-// Vérifier si l'utilisateur est connecté
+// we check if the user is logged in
 if (!isset($_SESSION["user"])) {
     header("Location: ../credential/login.php");
     exit();
 }
 
-//On vérifie si on reçoit un ID de la part du post
+//we check if we get and if from the post
 if(!isset($_GET["id"]) || empty($_GET["id"])) {
-    //Ici je n'ai pas reçu d'ID, donc je redirige l'utilisateur
+    //here we don't have an id so we redirect to feed
     header("Location: ../feed/feed.php");
     exit();
 }
 
-//Ici, j'ai reçu un ID de la part de post
+//here we got an id
 $id = $_GET["id"];
 
-//On se connecte à la BDD
+//we connect to the db
 require_once "../../components/db.php";
 
-//On récupère l'article qu'on souhaite modifier dans la BDD avec un requête
+//we get the article we want to modify
 $sql = "SELECT * FROM post WHERE id = :id";
 $req = $db->prepare($sql);
 $req->bindValue(":id", $id, PDO::PARAM_INT);
@@ -29,22 +29,36 @@ $req->execute();
 $post = $req->fetch();
 $old_media = $post->media;
 
-//On vérifie si le post est vide
+//we check if the post exist
 if(!$post) {
     http_response_code(404);
-    echo "Désolé, aucun post trouvé !";
+    echo '<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR
+                    <br>
+                    Sorry post not found :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="../feed/feed.php">
+                    Return
+                </a>
+            </button>
+        </div>';
     exit();
 }
 
-$title = "Mon site || Modifier a post";
+$title = "Wolf Fitness || Modifier a post";
 
-//On vérifie si le post appartient à l'utilisateur
+//we check if the post was made by the user
 if($_SESSION["user"]["username"] == $post->post_author) {
-    //On traite le formulaire
+    //we check the form
     if(!empty($_POST)) {
         if(!empty($_POST["content"])) {
-            //Ici le formulaire est complet
-            //On récupère les infos en les protégeant
+            //here the form is complete
+            //we get the form and protect it
             $postContent = strip_tags($_POST["content"]);
 
             // Check if a file was uploaded
@@ -160,7 +174,7 @@ if($_SESSION["user"]["username"] == $post->post_author) {
                 exit();
             }
 
-            //Ici on a réussi à modifier le post
+            //here we where able to modify the post
             header("Location: ../feed/feed.php");
         }
     }

@@ -2,16 +2,16 @@
 
 session_start();
 
-//on empèche le suer non connecté de venir par l'url
+//we don't allow user on this page
 
 if (isset($_SESSION['user'])) {
     header('Location: ../feed/feed.php');
 }
 
-//on supprime la partie user de la session
+//we supress the user session
 unset($_SESSION['user']);
 
-//redirige le user vers le index
+//redirect to the feed
 header('Location: ../feed/feed.php');
 
 ?>

@@ -2,9 +2,10 @@
 $title = "Feed";
 include "../../components/header.php";
 include "../../components/navbar.php";
-
 require '../../components/db.php';
+//we create the empty var
 $results = [];
+//we take the user input and make a query that will go check for any match in the description of each post
 if (isset($_GET['query'])) {
     $query = $_GET['query'];
     $stmt = $db->prepare("SELECT * FROM post WHERE post_description LIKE ?");
@@ -27,6 +28,7 @@ include "../../components/likes.php";
     </div>
 </form>
 
+<!-- we display each posts that matched the search -->
 <?php if (!empty($results)): ?>
     <?php foreach ($results as $post): ?>
         <div class="css_post container column is-half my-6">

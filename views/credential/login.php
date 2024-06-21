@@ -1,28 +1,27 @@
 <?php
 include '../../components/header.php';
 
-//on vàrifie que le form ne soit pas vide
+//we check if the form is empty
 if (!empty($_POST)) {
-    //ici le formualire est envoyé
-    //on vérifie que tous les champs soit remplie
+    //we check that the form is complete
     if (isset($_POST["email"], $_POST["password"])  && !empty($_POST["email"]) && !empty($_POST["password"])) {
-        //on check l'email
+        //we check the email
         if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
             die("L'adresse email n'est pas valide");
         }
 
-        //on peut enregistrer notre user
-        //on se co a la db
+        //we can log the user
+        //we connect to the db
         require_once "../../components/db.php";
 
-        //Requête préparé
+        //prepared req
         $sql = "SELECT * FROM users WHERE email = :email";
         $req = $db->prepare($sql);
         $req->bindValue(':email', $_POST["email"]);
         $req->execute();
         $user = $req->fetch();
 
-        //si l'email n'existe pas dans bd
+        //if the email doesn't exist
         if (!$user) {
             die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../assets/logo.svg" alt="logo">
@@ -41,7 +40,7 @@ if (!empty($_POST)) {
         </div>');
         }
 
-        //ici j'ai un user dans la db donc je dois comparém le mot de passe
+        //here we have a verified user we can now compare the password
         if (password_verify($_POST["password"], $user->password)) {
           session_start();
           $_SESSION["user"] = [
@@ -53,9 +52,22 @@ if (!empty($_POST)) {
           header("Location: ../feed/feed.php");
           exit();
         } else {
-          die("information de connexion incorrect");
+          die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR 
+                    <br>
+                    Sorry the information you entered are not valid :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="login.php">
+                    Return
+                </a>
+            </button>
+        </div>');
         }
-        //ici on a un user co valide donc on crée la session
         
 
     } else {

@@ -4,7 +4,7 @@ include "../../components/header.php";
 include "../../components/navbar.php";
 require "../../components/db.php";
 
-// Vérifier si l'utilisateur est connecté
+// check if the user is logged in
 if (!isset($_SESSION["user"])) {
     header("Location: ../credential/login.php");
     exit();
