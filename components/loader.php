@@ -4,12 +4,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Loading Wolf Fitness</title>
-    <link rel="stylesheet" href="../stylesheet/style.css">
+    <link rel="stylesheet" href="../../stylesheet/style.css">
     <link rel="stylesheet" href="https://use.typekit.net/kyn8vvk.css">
   </head>
   <body>
     <!-- page loader ----------------------------------------------------------------------------------------------------------->
-    <div class="loading-page" style="background-color: #282828;">
+    <div class="loading-page" style="background-color: #282828;
+    position: fixed;
+    z-index: 9999;
+    color: black;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    ">
         <svg id="svg" width="393" height="482" viewBox="0 0 393 482" fill="none">
             <path d="M147.632 68.2517C140.252 70.5067 120.109 102.038 119.814 141.354C102.71 148.337 83.3031 198.578 86.1817 195.864C101.191 181.727 82.5035 211.284 84.6785 220.32C95.7532 266.361 163.233 322.551 160.386 311.175C154.341 287.007 190.42 328.22 196.905 328.22C203.39 328.22 236.646 293.298 232.855 309.402C229.065 325.506 297.784 267.792 309.171 218.78C311.066 210.615 292.827 179.301 305.9 192.528C300.519 163.92 272.9 139.371 273.052 138.283C277.09 109.791 251.383 68.0339 246.321 68.0339C234.527 68.0339 230.401 108.594 196.553 108.594C166.399 108.594 154.165 66.401 147.624 68.2439L147.632 68.2517Z" fill="#1D1D1B" stroke="#1D1D1B" stroke-miterlimit="10"/>
             <path d="M256.668 220.522C254.613 221.198 274.595 219.612 274.595 221.136C274.595 250.459 255.093 265.7 252.878 270.871C252.302 272.217 252.31 242.854 251.718 244.721C242.099 275.195 207.748 308.282 196.921 308.282C188.877 308.282 152.086 273.982 142.059 245.032C141.611 243.733 143.538 272.924 140.06 270.467C132.712 265.273 114.728 228.71 118.974 219.503C119.694 217.948 138.125 219.519 135.638 218.788C78.6974 201.968 129.625 159.278 122.46 165.258C91.5153 191.097 135.102 136.51 165.696 120.188C167.551 119.192 146.457 131.199 163.641 110.188C168.758 103.936 196.945 134.488 196.945 134.488C197.808 134.488 221.637 101.65 229.913 111.105C247.417 131.097 222.165 117.412 227.226 120.491C251.646 135.335 311.21 192.629 272.149 166.331C267.367 163.111 311.85 202.326 256.7 220.522H256.668Z" fill="white" stroke="#1D1D1B" stroke-miterlimit="10"/>
@@ -28,6 +39,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"
         integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="../js/index.js"></script>
+    <script src="../../js/loader.js"></script>
   </body>
 </html>

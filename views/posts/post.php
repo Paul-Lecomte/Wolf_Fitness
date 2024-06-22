@@ -142,10 +142,10 @@ if (!$post){
                 <img src="../../assets/heart.svg" alt="">
               </button>
               <?php else: ?>
-              <a class="comment image is-32x32" href="../profile/login.php">
+              <a class="comment image is-32x32" href="../credential/login.php">
                 <img src="../../assets/comment.svg" alt="">
               </a>
-              <a name="like" class="like image is-32x32" href="../profile/login.php">
+              <a name="like" class="like image is-32x32" href="../credential/login.php">
                 <img src="../../assets/heart.svg" alt="">
               </a>
               <?php endif;?>

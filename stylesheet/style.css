@@ -135,9 +135,8 @@ span .lower_border{
 
 /*page loader---------------------------------------------------------------*/
   .loading-page {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: fixed;
+    z-index: 9999;
     color: black;
     height: 100%;
     width: 100%;
@@ -154,7 +153,6 @@ span .lower_border{
     fill-opacity: 0.4;
     stroke-width: 3px;
     stroke-dasharray: 4500;
-    animation: draw 13s ease;
   }
 
   @keyframes draw {

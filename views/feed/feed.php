@@ -1,6 +1,7 @@
 <?php
 $title = "Feed";
 include "../../components/header.php";
+include "../../components/loader.php";
 include "../../components/navbar.php";
 
 require '../../components/db.php';
@@ -196,8 +197,8 @@ if (!empty($_POST)) {
             <div class="post_footer container is-three-quarters">
             <form class="is-flex is-align-items-center is-flex-direction-row">
                 <input type="hidden" name="post_id" value="<?= $post->id ?>">
-                <a name="like" class="like image is-32x32" href="login.php">
-                    <img src="assets/heart.svg" alt="">
+                <a name="like" class="like image is-32x32" href="../credential/login.php">
+                    <img src="../../assets/heart.svg" alt="">
                 </a>
                 <span class="pl-3"><?= $post->likes ?> likes</span>
             </form>
@@ -230,6 +231,10 @@ if (!empty($_POST)) {
         </div>
     </form>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"
+        integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="../../js/loader.js"></script>
 <?php
 include "../../components/footer.php";
 ?>
