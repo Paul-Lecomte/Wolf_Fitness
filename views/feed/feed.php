@@ -1,11 +1,8 @@
 <?php
 $title = "Feed";
 include "../../components/header.php";
-include "../../components/loader.php";
 include "../../components/navbar.php";
-
 require '../../components/db.php';
-
 include "../../components/likes.php";
 
 // Fetch posts from the database
@@ -135,11 +132,10 @@ if (!empty($_POST)) {
         if (!$req->execute()) {
             die("Post request failed");
         } else {
-            header("Location: ../feed/feed.php");
+            header("../feed/feed.php");
             exit();
         }
     } else {
-        header("Location: ../feed/feed.php");
         die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
             <div class="box">

@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `comment_author` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '""',
   `comment_pp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '""',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `post` (
   `pp_user` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '""',
   `likes` int DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `post_likes` (
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `post_id` (`post_id`,`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 
@@ -91,21 +91,7 @@ CREATE TABLE IF NOT EXISTS `training` (
   `created_at` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
--- Les données exportées n'étaient pas sélectionnées.
-
--- Listage de la structure de table wolf_fitness. training_exercises
-CREATE TABLE IF NOT EXISTS `training_exercises` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `training_id` int NOT NULL,
-  `exercise_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `training_id` (`training_id`),
-  KEY `exercise_id` (`exercise_id`),
-  CONSTRAINT `training_exercises_ibfk_1` FOREIGN KEY (`training_id`) REFERENCES `training` (`id`),
-  CONSTRAINT `training_exercises_ibfk_2` FOREIGN KEY (`exercise_id`) REFERENCES `exercice` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 
@@ -118,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `bio` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT 'empty bio',
   `profile_pic` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 

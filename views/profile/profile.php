@@ -1,7 +1,6 @@
 <?php
 $title = "Feed";
 include "../../components/header.php";
-include "../../components/loader.php";
 include "../../components/navbar.php";
 require "../../components/db.php";
 // check if the user is logged in

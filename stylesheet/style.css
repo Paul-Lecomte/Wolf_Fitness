@@ -161,6 +161,7 @@ span .lower_border{
     }
     100% {
       stroke-dashoffset: 0;
+      opacity: 0%;
     }
   }
 

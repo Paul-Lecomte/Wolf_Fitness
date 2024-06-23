@@ -9,7 +9,7 @@
   </head>
   <body>
     <!-- page loader ----------------------------------------------------------------------------------------------------------->
-    <div class="loading-page" style="background-color: #282828;
+    <div id="loader" class="loading-page" style="background-color: #282828;
     position: fixed;
     z-index: 9999;
     color: black;
