@@ -124,6 +124,7 @@ if($_SESSION["user"]["username"] == $post->post_author) {
                 $image_extension = image_type_to_extension($image_type, true);
                 $image_name = bin2hex(random_bytes(16)) . $image_extension;
                 $mediaPath = "../../uploads/" . $image_name;
+                chmod($mediaPath, 0644); //restrict script executions
                 if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
                     die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">

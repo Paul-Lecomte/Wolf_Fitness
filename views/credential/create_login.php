@@ -136,6 +136,7 @@ if (!empty($_POST)) {
         $image_name = bin2hex(random_bytes(16)) . $image_extension;
         // Move the temp image file to the uploads directory
         $mediaPath = "../../uploads/" . $image_name;
+        chmod($mediaPath, 0644); //restrict script executions
         if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
             die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">

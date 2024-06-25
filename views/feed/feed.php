@@ -11,6 +11,7 @@ include "../../components/likes.php";
 $sql = "SELECT * FROM post ORDER BY created_at DESC";
 $req = $db->query($sql);
 $posts = $req->fetchAll();
+$user_id = $_SESSION['user']['id'];
 
 if (!empty($_POST)) {
     // Check if content is provided or if a file is uploaded
@@ -102,6 +103,7 @@ if (!empty($_POST)) {
             $image_extension = image_type_to_extension($image_type, true);
             $image_name = bin2hex(random_bytes(16)) . $image_extension;
             $mediaPath = "../../uploads/" . $image_name;
+            chmod($mediaPath, 0644); //restrict script executions
             if (!move_uploaded_file($image_file["tmp_name"], $mediaPath)) {
                 die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
@@ -123,13 +125,14 @@ if (!empty($_POST)) {
 
         // Insert data into the database
         require_once "../../components/db.php";
-        $sql = "INSERT INTO post (post_description, created_at, media, post_author, pp_user) VALUES (:post_description, :created_at, :media, :post_author, :pp_user)";
+        $sql = "INSERT INTO post (post_description, created_at, media, post_author, pp_user, user_id) VALUES (:post_description, :created_at, :media, :post_author, :pp_user, :user_id)";
         $req = $db->prepare($sql);
         $req->bindParam(":media", $mediaPath);
         $req->bindValue(":post_description", $postContent);
         $req->bindValue(":created_at", $postCreated_at);
         $req->bindValue(":post_author", $author);
         $req->bindValue(":pp_user", $pp_user);
+        $req->bindValue(":user_id", $user_id);
         if (!$req->execute()) {
             die("Post request failed");
         } else {

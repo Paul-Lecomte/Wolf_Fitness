@@ -9,7 +9,7 @@ if (!isset($_SESSION["user"])) {
     exit();
 }
 
-// get the suer id form the session
+// get the user id form the session
 $user_id = $_SESSION['user']["id"];
 $username = $_SESSION['user']["username"];
 $pp_user = $_SESSION['user']["profile_pic"];
@@ -98,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $image_extension = image_type_to_extension($image_type, true);
             $image_name = bin2hex(random_bytes(16)) . $image_extension;
             $profilePicPath = "../../uploads/" . $image_name;
+            chmod($profilePicPath, 0644); //restrict script executions
             if (!move_uploaded_file($image_file["tmp_name"], $profilePicPath)) {
                 die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
@@ -125,6 +126,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Mettre à jour les informations de l'utilisateur dans la BDD
+        $sql = "UPDATE post SET pp_user = :profile_pic WHERE user_id = :user_id";
+        $req = $db->prepare($sql);
+        $req->bindValue(":profile_pic", $profilePicPath);
+        $req->bindValue(":user_id", $user_id);
+        $req->execute();
+
+        $sql = "UPDATE comment SET comment_pp = :profile_pic WHERE user_id = :user_id";
+        $req = $db->prepare($sql);
+        $req->bindValue(":profile_pic", $profilePicPath);
+        $req->bindValue(":user_id", $user_id);
+        $req->execute();
+
         $sql = "UPDATE users SET username = :username, bio = :bio, profile_pic = :profile_pic WHERE user_id = :user_id";
         $req = $db->prepare($sql);
         $req->bindValue(":username", $new_username);

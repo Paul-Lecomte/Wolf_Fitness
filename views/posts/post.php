@@ -14,6 +14,8 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 //here we have an id
 $id =$_GET['id'];
 
+$user_id = $_SESSION['user']['id'];
+
 require_once "../../components/db.php";
 //we get the post with the id
 $sql = "SELECT * FROM post WHERE id = :id";
@@ -43,7 +45,7 @@ if (!empty($_POST)) {
       //we connect to the database
       require_once "../../components/db.php";
       //we make the query to insert the data
-      $sql = "INSERT INTO comment (comment_description, created_at, post_id, comment_author, comment_pp) VALUES (:comment_description, :created_at, :post_id, :comment_author, :comment_pp)";
+      $sql = "INSERT INTO comment (comment_description, created_at, post_id, comment_author, comment_pp, user_id) VALUES (:comment_description, :created_at, :post_id, :comment_author, :comment_pp, :user_id)";
       //we prep the request
       $req = $db->prepare($sql);
       //we bind the values
@@ -52,6 +54,7 @@ if (!empty($_POST)) {
       $req->bindValue(":created_at", $postCreated_at);
       $req->bindValue(":comment_author", $author);
       $req->bindValue(":comment_pp", $profile_pic);
+      $req->bindValue(":user_id", $user_id);
       //we execute the query
       if (!$req->execute()) {
           die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
