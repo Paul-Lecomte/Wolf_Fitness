@@ -96,11 +96,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete-exercise'])) {
 $sql = "SELECT * FROM exercice WHERE training_id = ? ORDER BY id DESC";
 $req = $db->prepare($sql);
 $req->execute([$training_id]);
-$exercices = $req->fetchAll();
+$exercices = $req->fetchAll(); 
 ?>
 
-<div>
-    <h1 class="has-text-centered is-size-1">
+
+
+<div class="is-flex is-justify-content-center">
+    <div style="width:60%;" class="is-flex is-justify-content-center is-align-items-center">
+        <button type="button" class="button" onclick="javascript:history.go(-1)">Back</button>
+    </div>
+    <h1 style="width:70%;" class="is-size-1">
         <?= htmlspecialchars($training->name) ?>
     </h1>
 </div>
@@ -114,7 +119,6 @@ $exercices = $req->fetchAll();
                 <a href="exercices.php?id=<?= $exercice->id ?>" class="is-flex is-flex-direction-row is-align-items-center">
                     <img src="../../assets/round.svg" alt="">
                     <p class="ml-2"><?= htmlspecialchars($exercice->name) ?></p>
-                    <p><?= $exercice->id ?></p>
                 </a>
                 <a class="button edit-exercise" href="#" data-exercise-id="<?= $exercice->id ?>" data-exercise-name="<?= $exercice->name ?>" data-description="<?= $exercice->description ?>">Edit</a>
                 <form method="POST" action="" style="display:inline;">

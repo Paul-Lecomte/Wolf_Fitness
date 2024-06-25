@@ -34,6 +34,8 @@ if (isset($_POST['like']) && isset($_POST['post_id'])) {
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':post_id', $postId);
         $stmt->execute();
+        header("Refresh:0");
+        exit();
     } else {
         // User has not liked the post yet, so add a like
         $sql = "INSERT INTO post_likes (post_id, user_id) VALUES (:post_id, :user_id)";
@@ -47,5 +49,7 @@ if (isset($_POST['like']) && isset($_POST['post_id'])) {
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':post_id', $postId);
         $stmt->execute();
+        header("Refresh:0");
+        exit();
     }
 }

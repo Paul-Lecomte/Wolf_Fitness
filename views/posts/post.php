@@ -2,6 +2,8 @@
 
 include "../../components/header.php";
 include "../../components/navbar.php";
+require "../../components/db.php";
+include "../../components/likes.php";
 
 //we check if we get and id from post.php
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -72,7 +74,6 @@ if (!empty($_POST)) {
           
       }
   } else {
-      header("Location: feed.php");
       die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
             <div class="box">
@@ -132,22 +133,30 @@ if (!$post){
                   <img src="<?= $post->media ?>" alt="" class="" style="max-height: 25rem; object-fit: cover;">
               </div>
           </div>
-          
           <div class="post_footer container is-three-quarters">
               <?php if (isset($_SESSION["user"])): ?>
               <a class="comment image is-32x32" onclick="newPost()">
                 <img src="../../assets/comment.svg" alt="">
               </a>
-              <button type="submit" name="like" class="like image is-32x32">
-                <img src="../../assets/heart.svg" alt="">
-              </button>
+              <div class="is-flex is-flex-direction-row is-align-items-center">
+                  <form method="post" class="is-flex is-align-items-center is-flex-direction-row">
+                      <input type="hidden" name="post_id" value="<?= $post->id ?>">
+                      <button type="submit" name="like" class="like image is-32x32">
+                          <img src="../../assets/heart.svg" alt="">
+                      </button>
+                      <span class="pl-3"><?= $post->likes ?> likes</span>
+                  </form>
+              </div>
               <?php else: ?>
               <a class="comment image is-32x32" href="../credential/login.php">
                 <img src="../../assets/comment.svg" alt="">
               </a>
-              <a name="like" class="like image is-32x32" href="../credential/login.php">
-                <img src="../../assets/heart.svg" alt="">
-              </a>
+              <div class="is-flex is-flex-direction-row is-align-items-center">
+                  <a name="like" class="like image is-32x32" href="../credential/login.php">
+                    <img src="../../assets/heart.svg" alt="">
+                  </a>
+                  <span class="pl-3"><?= $post->likes ?> likes</span>
+              </div>
               <?php endif;?>
               <?php if (isset($_SESSION["user"]) && $_SESSION["user"]["username"] === $post->post_author): ?>
                 <a href="update_post.php?id=<?= $post->id ?>" class="button is-warning is-light">Modifier</a>
@@ -175,11 +184,6 @@ if (!$post){
                 </p>
                 <p>Crée le : <i> <?= $comment->created_at ?> </i></p>
               </div>
-          </div>
-          <div class="post_footer container is-three-quarters">
-              <button class="like image is-32x32">
-                <img src="../../assets/heart.svg" alt="">
-              </button>
           </div>
         </div>
         <?php endforeach; ?>

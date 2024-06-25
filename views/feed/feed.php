@@ -1,6 +1,8 @@
 <?php
+ob_start();
 $title = "Feed";
 include "../../components/header.php";
+include "../../components/loader.php";
 include "../../components/navbar.php";
 require '../../components/db.php';
 include "../../components/likes.php";
@@ -17,7 +19,6 @@ if (!empty($_POST)) {
         $postCreated_at = date("Y-m-d H:i:s");
         $author = $_SESSION['user']["username"];
         $pp_user = $_SESSION['user']["profile_pic"];
-
         $mediaPath = null; // Initialize media path to null
 
         // Check if a file is uploaded
@@ -132,11 +133,11 @@ if (!empty($_POST)) {
         if (!$req->execute()) {
             die("Post request failed");
         } else {
-            header("../feed/feed.php");
+            header("Refresh:0; url=feed.php");
             exit();
         }
     } else {
-        header("Location: ../feed/feed.php");
+        header("Refresh:0");
         exit;
     }
 }
@@ -219,5 +220,6 @@ if (!empty($_POST)) {
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="../../js/loader.js"></script>
 <?php
+ob_end_flush();
 include "../../components/footer.php";
 ?>

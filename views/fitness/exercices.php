@@ -75,14 +75,17 @@ $exercisesSpec = $req->fetchAll();
 ?>
 
 <div class="columns is-flex-direction-row">
+    <div style="width:60%;" class="is-flex is-justify-content-center is-align-items-center">
+        <button type="button" class="button" onclick="javascript:history.go(-1)">Back</button>
+    </div>
+    <h1 class="column is-three-fifths has-text-centered is-size-1">
+        <?= htmlspecialchars($exercice->name) ?>
+    </h1>
     <div class="column is-one-fifth is-flex is-justify-content-center is-align-items-center">
         <a href="#" onclick="showDescriptionModal('<?= htmlspecialchars($exercice->description) ?>')">
             <img src="../../assets/question_mark.svg" class="image is-32x32" alt="exercise description">
         </a>
     </div>
-    <h1 class="column is-three-fifths has-text-centered is-size-1">
-        <?= htmlspecialchars($exercice->name) ?>
-    </h1>
 </div>
 <div class="">
     <ul class="column is-flex-direction-column">

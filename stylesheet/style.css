@@ -1,5 +1,5 @@
 @charset "utf-8"; 
-@import "../node_modules/bulma/css/bulma.css"; 
+
 
 * {
   padding: 0;
@@ -134,50 +134,51 @@ span .lower_border{
 }
 
 /*page loader---------------------------------------------------------------*/
-  .loading-page {
-    position: fixed;
-    z-index: 9999;
-    color: black;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: center;
-    justify-content: center;
-  }
+.loading-page {
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  background: grey;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  color: #191654;
+}
 
-  #svg {
-    height: 100%;
-    width: 100%;
-    fill-opacity: 0.4;
-    stroke-width: 3px;
-    stroke-dasharray: 4500;
-  }
+#svg {
+  height: 100%;
+  width: 100%;
+  stroke: black;
+  fill-opacity: 0.4;
+  stroke-width: 3px;
+  stroke-dasharray: 4500;
+  animation: draw 13s ease;
+}
 
-  @keyframes draw {
-    0% {
-      stroke-dashoffset: 4500;
-    }
-    100% {
-      stroke-dashoffset: 0;
-      opacity: 0%;
-    }
+@keyframes draw {
+  0% {
+    stroke-dashoffset: 4500;
   }
-
-  .name-container {
-    height: 20%;
-    overflow: hidden;
+  100% {
+    stroke-dashoffset: 0;
   }
+}
 
-  .logo-name {
-    color: #fff;
-    font-size: 40px;
-    letter-spacing: 12px;
-    text-transform: uppercase;
-    margin-left: 20px;
-    font-weight: bolder;
-  }
+.name-container {
+  height: 20%;
+  overflow: hidden;
+}
 
-/*profile---------------------------------------------------------------*/
-  
+.logo-name {
+  color: #fff;
+  font-size: 40px;
+  letter-spacing: 12px;
+  text-transform: uppercase;
+  margin-left: 20px;
+  font-weight: bolder;
+}

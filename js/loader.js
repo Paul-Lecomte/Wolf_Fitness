@@ -1,15 +1,24 @@
-window.onload = function() {
-    var svg = document.getElementById('svg');
-    var loader = document.getElementById('loader');
-    
-    // Start the drawing animation
-    svg.style.animation = 'draw 4s ease';
-    
-    // Hide the loader after animation completes
-    setTimeout(function() {
-        loader.style.opacity = '0'; // Fading out the loader
-        setTimeout(function() {
-            loader.style.display = 'none'; // Hide loader after fade out
-        }, 1000); // Adjust as per your animation duration
-    }, 5000); // Adjust the timeout duration as needed
-};
+gsap.fromTo(
+    ".loading-page",
+    { opacity: 1 },
+    {
+        opacity: 0,
+        display: "none",
+        duration: 1.5,
+        delay: 3.5,
+    }
+);
+
+gsap.fromTo(
+    ".logo-name",
+    {
+        y: 50,
+        opacity: 0,
+    },
+    {
+        y: 0,
+        opacity: 1,
+        duration: 2,
+        delay: 0.5,
+    }
+);
