@@ -13,6 +13,7 @@ if (isset($_GET['query'])) {
     $results = $stmt->fetchAll(PDO::FETCH_OBJ);
 }
 include "../../components/likes.php";
+include "../../components/make_post.php";
 ?>
 
 <form method="GET" class="m-3 is-flex is-justify-content-center">
@@ -82,6 +83,7 @@ include "../../components/likes.php";
 <?php else: ?>
     <h1 class="has-text-centered m-6 is-size-3">No results found.</h1>
 <?php endif; ?>
+<?php include "../../components/new_post.php"; ?>
 
 <?php
 include "../../components/footer.php";

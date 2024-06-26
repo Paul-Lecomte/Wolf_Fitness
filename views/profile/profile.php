@@ -40,6 +40,7 @@ $liked_posts_stmt->execute();
 $liked_posts = $liked_posts_stmt->fetchAll(PDO::FETCH_OBJ);
 
 include "../../components/likes.php";
+include "../../components/make_post.php";
 ?>
 
 <div class="css_post container columns is-flex-direction-column is-align-items-center is-full my-6 box">
@@ -176,6 +177,7 @@ include "../../components/likes.php";
         </div>
     </div>
 </div>
+<?php include "../../components/new_post.php"; ?>
 
 
 <?php

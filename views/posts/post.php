@@ -114,6 +114,7 @@ if (!$post){
             </button>
         </div>';
 }
+include "../../components/post.php";
 ?>
 <!-- Post ----------------------------------------------------------------------------->
         <div class="css_post container column is-half my-6">

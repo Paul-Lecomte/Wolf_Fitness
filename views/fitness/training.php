@@ -97,6 +97,8 @@ $sql = "SELECT * FROM exercice WHERE training_id = ? ORDER BY id DESC";
 $req = $db->prepare($sql);
 $req->execute([$training_id]);
 $exercices = $req->fetchAll(); 
+
+include "../../components/make_post.php"
 ?>
 
 
@@ -192,7 +194,7 @@ $exercices = $req->fetchAll();
     </div>
     <button class="modal-close is-large" aria-label="close"></button>
 </div>
-
+<?php include "../../components/new_post.php"; ?>
 <?php
 include "../../components/footer.php";
 ?>

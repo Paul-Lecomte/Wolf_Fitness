@@ -70,6 +70,7 @@ $trainings = $stmt->fetchAll();
 </a>
 <?php endforeach; ?>
 
+
 <?php
 include "../../components/footer.php";
 ?>

@@ -72,6 +72,8 @@ $req = $db->prepare($sql);
 $req->bindValue(':id', $id, PDO::PARAM_INT);
 $req->execute();
 $exercisesSpec = $req->fetchAll();
+
+include "../../components/make_post.php";
 ?>
 
 <div class="columns is-flex-direction-row">
@@ -180,6 +182,7 @@ $exercisesSpec = $req->fetchAll();
     </div>
     <button class="modal-close is-large" aria-label="close" onclick="hideDescriptionModal()"></button>
 </div>
+<?php include "../../components/new_post.php"; ?>
 
 <?php
 include "../../components/footer.php";
