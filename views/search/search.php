@@ -3,9 +3,9 @@ $title = "Feed";
 include "../../components/header.php";
 include "../../components/navbar.php";
 require '../../components/db.php';
-//we create the empty var
+// we create the empty var
 $results = [];
-//we take the user input and make a query that will go check for any match in the description of each post
+// we take the user input and make a query that will go check for any match in the description of each post
 if (isset($_GET['query'])) {
     $query = $_GET['query'];
     $stmt = $db->prepare("SELECT * FROM post WHERE post_description LIKE ?");
@@ -32,6 +32,17 @@ include "../../components/make_post.php";
 <!-- we display each posts that matched the search -->
 <?php if (!empty($results)): ?>
     <?php foreach ($results as $post): ?>
+        <?php
+        // Fetch the associated training if it exists
+        $training = null;
+        if (!empty($post->training_id)) {
+            $trainingSql = "SELECT * FROM training WHERE id = :training_id";
+            $trainingReq = $db->prepare($trainingSql);
+            $trainingReq->bindValue(":training_id", $post->training_id, PDO::PARAM_INT);
+            $trainingReq->execute();
+            $training = $trainingReq->fetch(PDO::FETCH_ASSOC);
+        }
+        ?>
         <div class="css_post container column is-half my-6">
             <div class="profile container is-flex-direction-row pb-2">
                 <div class="profile-img image is-48x48">
@@ -45,6 +56,13 @@ include "../../components/make_post.php";
                 <div class="description pb-3">
                     <p><?= strip_tags($post->post_description) ?></p>
                     <p>Created on: <i><?= htmlspecialchars($post->created_at) ?></i></p>
+                    <?php if ($training): ?>
+                        <div class="box">
+                            <p>Training: <?= htmlspecialchars($training['name']) ?></p>
+                            <p>Number of exercises: <?= htmlspecialchars($training['nbrExercices']) ?></p>
+                            <p><?= htmlspecialchars($training['description']) ?></p>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="<?= $post->media === null ? 'is-hidden' : 'column is-three-quarters assets pb-3 assets image' ?>">
                     <img src="<?= htmlspecialchars($post->media) ?>" alt="" class="" style="max-height: 25rem; object-fit: cover;">

@@ -3,12 +3,14 @@ $title = "Feed";
 include "../../components/header.php";
 include "../../components/navbar.php";
 require "../../components/db.php";
-// check if the user is logged in
+
+// Check if the user is logged in
 if (!isset($_SESSION["user"])) {
     header("Location: ../credential/login.php");
     exit();
 }
-//use the session info for later use
+
+// Use the session info for later use
 $user_id = $_SESSION['user']["id"];
 $username = $_SESSION['user']["username"];
 $pp_user = $_SESSION['user']["profile_pic"];
@@ -72,6 +74,17 @@ include "../../components/make_post.php";
     <div id="Posts" class="tabcontent">
         <div class="is-flex is-flex-direction-column">
             <?php foreach ($user_posts as $post) : ?>
+                <?php
+                // Fetch the associated training if it exists
+                $training = null;
+                if (!empty($post->training_id)) {
+                    $trainingSql = "SELECT * FROM training WHERE id = :training_id";
+                    $trainingReq = $db->prepare($trainingSql);
+                    $trainingReq->bindValue(":training_id", $post->training_id, PDO::PARAM_INT);
+                    $trainingReq->execute();
+                    $training = $trainingReq->fetch(PDO::FETCH_ASSOC);
+                }
+                ?>
                 <div class="css_post container column is-half my-6">
                     <div class="profile container is-flex-direction-row pb-2">
                         <div class="profile-img image is-48x48">
@@ -85,6 +98,13 @@ include "../../components/make_post.php";
                         <div class="description pb-3">
                             <p><?= strip_tags($post->post_description) ?></p>
                             <p>Created on: <i><?= $post->created_at ?></i></p>
+                            <?php if ($training): ?>
+                                <div class="box">
+                                    <p>Training: <?= htmlspecialchars($training['name']) ?></p>
+                                    <p>Number of exercises: <?= htmlspecialchars($training['nbrExercices']) ?></p>
+                                    <p><?= htmlspecialchars($training['description']) ?></p>
+                                </div>
+                            <?php endif; ?>
                         </div>
                         <div class="<?= $post->media === null ? 'is-hidden' : 'column is-three-quarters assets pb-3 assets image' ?>">
                             <img src="<?= $post->media ?>" alt="" class="" style="max-height: 25rem; object-fit: cover;">
@@ -126,6 +146,17 @@ include "../../components/make_post.php";
     <div id="Likes" class="tabcontent">
         <div class="is-flex is-flex-direction-column">
             <?php foreach ($liked_posts as $post) : ?>
+                <?php
+                // Fetch the associated training if it exists
+                $training = null;
+                if (!empty($post->training_id)) {
+                    $trainingSql = "SELECT * FROM training WHERE id = :training_id";
+                    $trainingReq = $db->prepare($trainingSql);
+                    $trainingReq->bindValue(":training_id", $post->training_id, PDO::PARAM_INT);
+                    $trainingReq->execute();
+                    $training = $trainingReq->fetch(PDO::FETCH_ASSOC);
+                }
+                ?>
                 <div class="css_post container column is-half my-6">
                     <div class="profile container is-flex-direction-row pb-2">
                         <div class="profile-img image is-48x48">
@@ -139,6 +170,13 @@ include "../../components/make_post.php";
                         <div class="description pb-3">
                             <p><?= strip_tags($post->post_description) ?></p>
                             <p>Created on: <i><?= $post->created_at ?></i></p>
+                            <?php if ($training): ?>
+                                <div class="box">
+                                    <p>Training: <?= htmlspecialchars($training['name']) ?></p>
+                                    <p>Number of exercises: <?= htmlspecialchars($training['nbrExercices']) ?></p>
+                                    <p><?= htmlspecialchars($training['description']) ?></p>
+                                </div>
+                            <?php endif; ?>
                         </div>
                         <div class="<?= $post->media === null ? 'is-hidden' : 'column is-three-quarters assets pb-3 assets image' ?>">
                             <img src="<?= $post->media ?>" alt="" class="" style="max-height: 25rem; object-fit: cover;">
@@ -179,8 +217,7 @@ include "../../components/make_post.php";
 </div>
 <?php include "../../components/new_post.php"; ?>
 
-
 <?php
 include "../../components/footer.php";
 ?>
- <script src="../../js/profile.js"></script>
+<script src="../../js/profile.js"></script>
