@@ -12,11 +12,11 @@ $sql = "SELECT * FROM post ORDER BY created_at DESC";
 $req = $db->query($sql);
 $posts = $req->fetchAll(PDO::FETCH_ASSOC);
 
-$sql = "SELECT * FROM training";
-$req = $db->query($sql);
-$trainings = $req->fetchAll(PDO::FETCH_ASSOC);
-
-$user_id = $_SESSION['user']['id'];
+if (isset($_SESSION["user"])) {
+    $user_id = $_SESSION['user']['id'];
+} else {
+    $user_id = NULL;
+}
 
 include "../../components/make_post.php";
 ?>
@@ -37,27 +37,28 @@ include "../../components/make_post.php";
     <div class="css_post container column is-half my-6">
         <div class="profile container is-flex-direction-row pb-2">
             <div class="profile-img image is-48x48">
-                <img src="<?= $post['pp_user'] ?>" alt="profile image">
+                <img src="<?= htmlspecialchars($post['pp_user']) ?>" alt="profile image">
             </div>
             <div class="profile-name pl-3">
-                <p><?= $post['post_author'] ?></p>
+                <p><?= htmlspecialchars($post['post_author']) ?></p>
             </div>
         </div>
         <div class="post-content pers_align is-justify-content-center is-align-items-center pb-3">
             <div class="description pb-3">
                 <p><?= strip_tags($post['post_description']) ?></p>
-                <p>Created on: <i><?= $post['created_at'] ?></i></p>
+                <p>Created on: <i><?= htmlspecialchars($post['created_at']) ?></i></p>
                 <?php if ($training): ?>
                     <div class="box">
                         <p>Training: <?= htmlspecialchars($training['name']) ?></p>
                         <p>Number of exercises: <?= htmlspecialchars($training['nbrExercices']) ?></p>
                         <p><?= htmlspecialchars($training['description']) ?></p>
+                        <button class="button is-primary" onclick="openTrainingModal(<?= $post['training_id'] ?>)">View Training</button>
                     </div>
                 <?php endif; ?>
             </div>
             <div class="<?= $post['media'] === null ? 'is-hidden' : 'column is-three-quarters assets pb-3 assets image' ?>">
                 <?php if ($post['media'] !== null): ?>
-                    <img src="<?= $post['media'] ?>" alt="" class="" style="max-height: 25rem; object-fit: cover;">
+                    <img src="<?= htmlspecialchars($post['media']) ?>" alt="" class="" style="max-height: 25rem; object-fit: cover;">
                 <?php endif; ?>
             </div>
         </div>
@@ -68,20 +69,20 @@ include "../../components/make_post.php";
                 <button type="submit" name="like" class="like image is-32x32">
                     <img src="../../assets/heart.svg" alt="">
                 </button>
-                <span class="pl-3"><?= $post['likes'] ?> likes</span>
+                <span class="pl-3"><?= htmlspecialchars($post['likes']) ?> likes</span>
             </form>
             <a class="comment image is-32x32" href="../posts/post.php?id=<?= $post['id'] ?>">
                 <img src="../../assets/comment.svg" alt="">
             </a>
         </div>
         <?php else: ?>
-            <div class="post_footer container is-three-quarters">
+        <div class="post_footer container is-three-quarters">
             <form class="is-flex is-align-items-center is-flex-direction-row">
                 <input type="hidden" name="post_id" value="<?= $post['id'] ?>">
                 <a name="like" class="like image is-32x32" href="../credential/login.php">
                     <img src="../../assets/heart.svg" alt="">
                 </a>
-                <span class="pl-3"><?= $post['likes'] ?> likes</span>
+                <span class="pl-3"><?= htmlspecialchars($post['likes']) ?> likes</span>
             </form>
             <a class="comment image is-32x32" href="../posts/post.php?id=<?= $post['id'] ?>">
                 <img src="../../assets/comment.svg" alt="">
@@ -92,11 +93,30 @@ include "../../components/make_post.php";
     <span class="lower_border has-border-bottom" style="border: 1px solid #7D7D7D; width: 100%;"></span>
     <?php endforeach; ?>
 </div>
+<!-- Modal structure -->
+<div id="trainingModal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Training Details</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- Training exercises will be dynamically loaded here -->
+      <div id="exercisesList"></div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button" id="closeModal">Cancel</button>
+    </footer>
+  </div>
+</div>
+
 <?php include "../../components/new_post.php"; ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"
         integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="../../js/loader.js"></script>
+<script src="../../js/training-modal.js"></script>
 <?php
 ob_end_flush();
 include "../../components/footer.php";

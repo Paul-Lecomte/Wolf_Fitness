@@ -1,5 +1,9 @@
 <?php
-$user_id = $_SESSION['user']['id'];
+if (isset($_SESSION["user"])) {
+    $user_id = $_SESSION['user']['id'];
+} else{
+    $user_id = NULL;
+}
 function validatepost(){};
 
 $sql = "SELECT * FROM training WHERE user_id = :user_id ORDER BY created_at DESC";
