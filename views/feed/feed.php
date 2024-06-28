@@ -18,6 +18,35 @@ if (isset($_SESSION["user"])) {
     $user_id = NULL;
 }
 
+if(array_key_exists('add-training', $_POST)) { 
+    addTraining(); 
+}
+
+function addTraining(){
+    global $db, $user_id;
+    
+    $training_id = $_POST['training_id'];
+    
+    // Fetch the original training details
+    $trainingSql = "SELECT * FROM training WHERE id = :training_id";
+    $trainingReq = $db->prepare($trainingSql);
+    $trainingReq->bindValue(":training_id", $training_id, PDO::PARAM_INT);
+    $trainingReq->execute();
+    $training = $trainingReq->fetch(PDO::FETCH_ASSOC);
+    
+    if ($training) {
+        $training_name = $training['name'];
+        $description = $training['description'];
+        $nbrExercices = $training['nbrExercices'];
+        $created_at = date("Y-m-d H:i:s");
+
+        // Insert the training for the current user
+        $insertSql = "INSERT INTO training (name, creator, description, user_id, created_at, nbrExercices) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $db->prepare($insertSql);
+        $stmt->execute([$training_name, $training['creator'], $description, $user_id, $created_at, $nbrExercices]);
+    }
+}
+
 include "../../components/make_post.php";
 ?>
 <!-- Feed ----------------------------------------------------------------------------->
@@ -53,6 +82,12 @@ include "../../components/make_post.php";
                         <p>Number of exercises: <?= htmlspecialchars($training['nbrExercices']) ?></p>
                         <p><?= htmlspecialchars($training['description']) ?></p>
                         <button class="button is-primary" onclick="openTrainingModal(<?= $post['training_id'] ?>)">View Training</button>
+                        <?php if (isset($_SESSION["user"])): ?>
+                        <form method="post" style="display:inline;">
+                            <input type="hidden" name="training_id" value="<?= $post['training_id'] ?>">
+                            <button type="submit" name="add-training" class="button is-link">Add Training</button>
+                        </form>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
             </div>
@@ -93,30 +128,12 @@ include "../../components/make_post.php";
     <span class="lower_border has-border-bottom" style="border: 1px solid #7D7D7D; width: 100%;"></span>
     <?php endforeach; ?>
 </div>
-<!-- Modal structure -->
-<div id="trainingModal" class="modal">
-  <div class="modal-background"></div>
-  <div class="modal-card">
-    <header class="modal-card-head">
-      <p class="modal-card-title">Training Details</p>
-      <button class="delete" aria-label="close"></button>
-    </header>
-    <section class="modal-card-body">
-      <!-- Training exercises will be dynamically loaded here -->
-      <div id="exercisesList"></div>
-    </section>
-    <footer class="modal-card-foot">
-      <button class="button" id="closeModal">Cancel</button>
-    </footer>
-  </div>
-</div>
-
+<?php include "../../components/training_modal.php"; ?>
 <?php include "../../components/new_post.php"; ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"
         integrity="sha512-gmwBmiTVER57N3jYS3LinA9eb8aHrJua5iQD7yqYCKa5x6Jjc7VDVaEA0je0Lu0bP9j7tEjV3+1qUm6loO99Kw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="../../js/loader.js"></script>
-<script src="../../js/training-modal.js"></script>
 <?php
 ob_end_flush();
 include "../../components/footer.php";

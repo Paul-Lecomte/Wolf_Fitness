@@ -103,6 +103,7 @@ include "../../components/make_post.php";
                                     <p>Training: <?= htmlspecialchars($training['name']) ?></p>
                                     <p>Number of exercises: <?= htmlspecialchars($training['nbrExercices']) ?></p>
                                     <p><?= htmlspecialchars($training['description']) ?></p>
+                                    <button class="button is-primary" onclick="openTrainingModal(<?= $post['training_id'] ?>)">View Training</button>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -218,6 +219,7 @@ include "../../components/make_post.php";
 <?php include "../../components/new_post.php"; ?>
 
 <?php
+include "../../components/training_modal.php";
 include "../../components/footer.php";
 ?>
 <script src="../../js/profile.js"></script>

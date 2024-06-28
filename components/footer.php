@@ -71,5 +71,6 @@
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
     <script src="../../js/footer.js"></script>
+    <script src="../../js/training-modal.js"></script>
     <script src="../../js/animation.js"></script>
   </body>

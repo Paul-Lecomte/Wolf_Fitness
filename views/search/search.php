@@ -61,6 +61,7 @@ include "../../components/make_post.php";
                             <p>Training: <?= htmlspecialchars($training['name']) ?></p>
                             <p>Number of exercises: <?= htmlspecialchars($training['nbrExercices']) ?></p>
                             <p><?= htmlspecialchars($training['description']) ?></p>
+                            
                         </div>
                     <?php endif; ?>
                 </div>
@@ -101,6 +102,7 @@ include "../../components/make_post.php";
 <?php else: ?>
     <h1 class="has-text-centered m-6 is-size-3">No results found.</h1>
 <?php endif; ?>
+<?php include "../../components/training_modal.php"; ?>
 <?php include "../../components/new_post.php"; ?>
 
 <?php
