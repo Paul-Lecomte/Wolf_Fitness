@@ -22,6 +22,20 @@ session_start();
       #footer.hidden {
         transform: translateY(100%);
       }
+
+      .loading-page {
+        position: fixed;
+        z-index: 9999;
+        background: grey;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+        justify-content: center;
+        color: #191654;
+      }
     </style>
   </head>
   <body class="site">

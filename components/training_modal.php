@@ -12,9 +12,15 @@
     </section>
     <footer class="modal-card-foot">
       <button class="button" id="closeModal">Cancel</button>
+      <?php if (isset($_SESSION["user"])): ?>
       <form method="POST">
         <button type="submit" class="button" name="add-training" value="add-training">Add to your trainings</button>
       </form>
+      <?php else: ?>
+        <div>
+          <button class="button is-link"><a href="../credential/login.php">Add Training</a></button>
+        </div>
+      <?php endif; ?>
     </footer>
   </div>
 </div>

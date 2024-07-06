@@ -129,6 +129,7 @@ if (!$post) {
             </button>
         </div>';
 }
+include "../../components/add_training.php";
 include "../../components/make_post.php";
 ?>
 <!-- Post ----------------------------------------------------------------------------->

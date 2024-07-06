@@ -41,6 +41,7 @@ $liked_posts_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $liked_posts_stmt->execute();
 $liked_posts = $liked_posts_stmt->fetchAll(PDO::FETCH_OBJ);
 
+include "../../components/add_training.php";
 include "../../components/likes.php";
 include "../../components/make_post.php";
 ?>

@@ -1,5 +1,3 @@
-// exercise_actions.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const addExerciseButton = document.getElementById('add-exercise');
     const exerciseForm = document.getElementById('exercise-form');

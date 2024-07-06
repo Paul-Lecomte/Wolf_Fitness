@@ -1,5 +1,5 @@
 <?php
-// Adjust path based on your file structure
+// fetch the training
 require 'db.php';
 
 if (isset($_GET['training_id'])) {

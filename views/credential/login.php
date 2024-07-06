@@ -110,7 +110,6 @@ if (!empty($_POST)) {
           <button type="button" class="mt-3 p-2 c-button-red is-align-self-center"><a style="color:red;" href="create_login.php">Create Account</a></button>
           <button type="submit" class="mt-3 p-2 c-button">LOGIN</button>
         </div>
-        
       </div>
     </form>
   </body>
