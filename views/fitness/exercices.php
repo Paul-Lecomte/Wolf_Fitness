@@ -3,25 +3,38 @@ include "../../components/header.php";
 include "../../components/navbar.php";
 require "../../components/db.php";
 
-// check if the user is connected
+// Check if the user is connected
 if (!isset($_SESSION["user"])) {
     header("Location: ../credential/login.php");
     exit();
 }
 
 $id = $_GET['id'] ?? 0;
+$user_id = $_SESSION['user']['id'];
 
-// Fetch exercise details
-$sql = "SELECT name, description FROM exercice WHERE id = :id";
+// Fetch exercise details and user_id
+$sql = "SELECT name, description, user_id FROM exercice WHERE id = :id";
 $req = $db->prepare($sql);
 $req->bindValue(':id', $id, PDO::PARAM_INT);
 $req->execute();
-$exercice = $req->fetch();
+$exercice = $req->fetch(PDO::FETCH_ASSOC);
 
-if (!$exercice) {
-    echo "Exercise not found!";
-    include "../../components/footer.php";
-    exit;
+if (!$exercice || $exercice['user_id'] != $user_id) {
+    die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR training not found 
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="fitness.php">
+                    Return
+                </a>
+            </button>
+        </div>');
 }
 
 // Handle form submission for logging sets
@@ -71,7 +84,7 @@ $sql = "SELECT * FROM exercise_logs WHERE training_exercise_id = :id ORDER BY lo
 $req = $db->prepare($sql);
 $req->bindValue(':id', $id, PDO::PARAM_INT);
 $req->execute();
-$exercisesSpec = $req->fetchAll();
+$exercisesSpec = $req->fetchAll(PDO::FETCH_ASSOC);
 
 include "../../components/make_post.php";
 ?>
@@ -81,10 +94,10 @@ include "../../components/make_post.php";
         <button type="button" class="button" onclick="javascript:history.go(-1)">Back</button>
     </div>
     <h1 class="column is-three-fifths has-text-centered is-size-1">
-        <?= htmlspecialchars($exercice->name) ?>
+        <?= htmlspecialchars($exercice['name']) ?>
     </h1>
     <div class="column is-one-fifth is-flex is-justify-content-center is-align-items-center">
-        <a href="#" onclick="showDescriptionModal('<?= htmlspecialchars($exercice->description) ?>')">
+        <a href="#" onclick="showDescriptionModal('<?= htmlspecialchars($exercice['description']) ?>')">
             <img src="../../assets/question_mark.svg" class="image is-32x32" alt="exercise description">
         </a>
     </div>
@@ -95,12 +108,12 @@ include "../../components/make_post.php";
             <li class="column">
                 <div class="is-flex is-flex-direction-row is-align-items-center is-justify-content-space-evenly">
                     <img src="../../assets/round.svg" alt="">
-                    <p><?= htmlspecialchars($exerciseSpec->reps) ?> Reps</p>
-                    <p><?= htmlspecialchars($exerciseSpec->weight) ?> Kg</p>
-                    <p>Date : <?= htmlspecialchars($exerciseSpec->logged_at) ?></p>
-                    <a class="button edit-set" href="#" data-log-id="<?= $exerciseSpec->id ?>" data-reps="<?= $exerciseSpec->reps ?>" data-weight="<?= $exerciseSpec->weight ?>">Edit</a>
+                    <p><?= htmlspecialchars($exerciseSpec['reps']) ?> Reps</p>
+                    <p><?= htmlspecialchars($exerciseSpec['weight']) ?> Kg</p>
+                    <p>Date : <?= htmlspecialchars($exerciseSpec['logged_at']) ?></p>
+                    <a class="button edit-set" href="#" data-log-id="<?= $exerciseSpec['id'] ?>" data-reps="<?= $exerciseSpec['reps'] ?>" data-weight="<?= $exerciseSpec['weight'] ?>">Edit</a>
                     <form method="POST" action="" style="display:inline;">
-                        <input type="hidden" name="log_id" value="<?= $exerciseSpec->id ?>">
+                        <input type="hidden" name="log_id" value="<?= $exerciseSpec['id'] ?>">
                         <button class="button is-danger" type="submit" name="delete-set">Delete</button>
                     </form>
                 </div>

@@ -39,8 +39,9 @@ CREATE TABLE IF NOT EXISTS `exercice` (
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '?',
   `training_id` int NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `user_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 
@@ -51,8 +52,9 @@ CREATE TABLE IF NOT EXISTS `exercise_logs` (
   `reps` int NOT NULL,
   `weight` decimal(10,2) NOT NULL,
   `logged_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 
@@ -95,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `training` (
   `user_id` int NOT NULL,
   `training_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Les données exportées n'étaient pas sélectionnées.
 

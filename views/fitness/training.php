@@ -12,14 +12,35 @@ if (!isset($_SESSION["user"])) {
 
 // Get the training ID from the URL
 $training_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$user_id = $_SESSION['user']['id'];
 
 // Fetch the training details
 $sql = "SELECT * FROM training WHERE id = ?";
 $req = $db->prepare($sql);
 $req->execute([$training_id]);
-$training = $req->fetch();
+$training = $req->fetch(PDO::FETCH_ASSOC);
 
+// Check if the training entry exists
 if (!$training) {
+    die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
+            <div class="box">
+                <p class="has-text-centered is-size-3">
+                    ERROR training not found 
+                    <br>
+                    Sorry something wrong happend :/
+                </p>
+            </div>
+            <button>
+                <a class="button is-size-5" href="fitness.php">
+                    Return
+                </a>
+            </button>
+        </div>');
+}
+
+// Check if the current user has rights to the training entry
+if ($user_id != $training['user_id']) {
     die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
             <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
             <div class="box">
@@ -43,9 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add-exercise'])) {
     $description = $_POST['description'] ?? '';
 
     if (!empty($exercise_name) && !empty($description)) {
-        $sql = "INSERT INTO exercice (name, description, training_id) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO exercice (name, description, training_id, user_id) VALUES (?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
-        $stmt->execute([$exercise_name, $description, $training_id]);
+        $stmt->execute([$exercise_name, $description, $training_id, $user_id]);
 
         // Increment the nbrExercices in the training table
         $sql = "UPDATE training SET nbrExercices = nbrExercices + 1 WHERE id = ?";
@@ -96,19 +117,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete-exercise'])) {
 $sql = "SELECT * FROM exercice WHERE training_id = ? ORDER BY id DESC";
 $req = $db->prepare($sql);
 $req->execute([$training_id]);
-$exercices = $req->fetchAll(); 
+$exercices = $req->fetchAll(PDO::FETCH_ASSOC); // Fetch as associative array
 
-include "../../components/make_post.php"
+include "../../components/make_post.php";
 ?>
-
-
 
 <div class="is-flex is-justify-content-center">
     <div style="width:60%;" class="is-flex is-justify-content-center is-align-items-center">
         <button type="button" class="button" onclick="javascript:history.go(-1)">Back</button>
     </div>
     <h1 style="width:70%;" class="is-size-1">
-        <?= htmlspecialchars($training->name) ?>
+        <?= htmlspecialchars($training['name']) ?>
     </h1>
 </div>
 
@@ -118,13 +137,13 @@ include "../../components/make_post.php"
         <?php foreach ($exercices as $exercice) : ?>
         <li class="column ml-3">
             <div class="is-flex is-flex-direction-row is-align-items-center is-justify-content-space-evenly">
-                <a href="exercices.php?id=<?= $exercice->id ?>" class="is-flex is-flex-direction-row is-align-items-center">
+                <a href="exercices.php?id=<?= $exercice['id'] ?>" class="is-flex is-flex-direction-row is-align-items-center">
                     <img src="../../assets/round.svg" alt="">
-                    <p class="ml-2"><?= htmlspecialchars($exercice->name) ?></p>
+                    <p class="ml-2"><?= htmlspecialchars($exercice['name']) ?></p>
                 </a>
-                <a class="button edit-exercise" href="#" data-exercise-id="<?= $exercice->id ?>" data-exercise-name="<?= $exercice->name ?>" data-description="<?= $exercice->description ?>">Edit</a>
+                <a class="button edit-exercise" href="#" data-exercise-id="<?= $exercice['id'] ?>" data-exercise-name="<?= $exercice['name'] ?>" data-description="<?= $exercice['description'] ?>">Edit</a>
                 <form method="POST" action="" style="display:inline;">
-                    <input type="hidden" name="exercise_id" value="<?= $exercice->id ?>">
+                    <input type="hidden" name="exercise_id" value="<?= $exercice['id'] ?>">
                     <button class="button is-danger" type="submit" name="delete-exercise">Delete</button>
                 </form>
             </div>
@@ -194,10 +213,9 @@ include "../../components/make_post.php"
     </div>
     <button class="modal-close is-large" aria-label="close"></button>
 </div>
+
 <?php include "../../components/new_post.php"; ?>
-<?php
-include "../../components/footer.php";
-?>
+<?php include "../../components/footer.php"; ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
 <script src="../../js/add_exercises.js"></script>
