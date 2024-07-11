@@ -55,6 +55,16 @@ Wolf Fitness is a web-based social media platform for fitness enthusiasts, inspi
    ```
 5. Create a pull request.
 
+## Premade users
+
+1. name : test
+   email : test@gmail.com
+   password : test123
+
+2. name : slush
+   email : slush@bork.com
+   password : ThisIsASecurePassword
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

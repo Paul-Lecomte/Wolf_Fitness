@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete-exercise'])) {
 }
 
 // Fetch the exercises for the training
-$sql = "SELECT * FROM exercice WHERE training_id = ? ORDER BY id DESC";
+$sql = "SELECT * FROM exercice WHERE training_id = ? ORDER BY id ASC";
 $req = $db->prepare($sql);
 $req->execute([$training_id]);
 $exercices = $req->fetchAll(PDO::FETCH_ASSOC); // Fetch as associative array
@@ -135,17 +135,19 @@ include "../../components/make_post.php";
 <div class="container">
     <ul class="column is-flex-direction-column">
         <?php foreach ($exercices as $exercice) : ?>
-        <li class="column ml-3">
-            <div class="is-flex is-flex-direction-row is-align-items-center is-justify-content-space-evenly">
-                <a href="exercices.php?id=<?= $exercice['id'] ?>" class="is-flex is-flex-direction-row is-align-items-center">
+        <li class="ml-3">
+            <div class="is-flex column is-flex-direction-row is-align-items-center">
+                <a style="width:50%;" href="exercices.php?id=<?= $exercice['id'] ?>" class="columns m-0 is-flex is-flex-direction-row is-align-items-center">
                     <img src="../../assets/round.svg" alt="">
                     <p class="ml-2"><?= htmlspecialchars($exercice['name']) ?></p>
                 </a>
-                <a class="button edit-exercise" href="#" data-exercise-id="<?= $exercice['id'] ?>" data-exercise-name="<?= $exercice['name'] ?>" data-description="<?= $exercice['description'] ?>">Edit</a>
-                <form method="POST" action="" style="display:inline;">
-                    <input type="hidden" name="exercise_id" value="<?= $exercice['id'] ?>">
-                    <button class="button is-danger" type="submit" name="delete-exercise">Delete</button>
-                </form>
+                <div style="width:50%">
+                    <a class="button edit-exercise" href="#" data-exercise-id="<?= $exercice['id'] ?>" data-exercise-name="<?= $exercice['name'] ?>" data-description="<?= $exercice['description'] ?>">Edit</a>
+                    <form method="POST" action="" style="display:inline;">
+                        <input type="hidden" name="exercise_id" value="<?= $exercice['id'] ?>">
+                        <button class="button is-danger" type="submit" name="delete-exercise">Delete</button>
+                    </form>
+                </div>
             </div>
         </li>
         <?php endforeach; ?>

@@ -39,16 +39,8 @@
                 </p>
               </a>
             </button>
-            <button type="button" class="post has-text-centered img is-32x32">
-              <a href="../credential/login.php">
-                <img src="../../assets/plus.svg" alt="Post button">
-                <p style="color: #657786;">
-                  Post
-                </p>
-              </a>
-            </button>
             <?php endif; ?>
-            <?php if (function_exists('validatepost')): ?>
+            <?php if (function_exists('validatepost') && isset($_SESSION["user"])): ?>
               <button class="post has-text-centered img is-32x32" onclick="newPost()">
                 <img src="../../assets/plus.svg" alt="Post button">
                 <p style="color: #657786;">
@@ -57,7 +49,7 @@
               </button>
             <?php else: ?>
               <button type="button" class="post has-text-centered img is-32x32">
-                <a href="../feed/feed.php">
+                <a href="../credential/login.php">
                   <img src="../../assets/plus.svg" alt="Post button">
                   <p style="color: #657786;">
                     Post

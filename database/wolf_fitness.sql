@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Listage des données de la table wolf_fitness.comment : ~0 rows (environ)
 
 -- Listage de la structure de table wolf_fitness. exercice
 CREATE TABLE IF NOT EXISTS `exercice` (
@@ -41,9 +41,16 @@ CREATE TABLE IF NOT EXISTS `exercice` (
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Listage des données de la table wolf_fitness.exercice : ~0 rows (environ)
+INSERT INTO `exercice` (`id`, `name`, `training_id`, `description`, `user_id`) VALUES
+	(17, 'bench press', 29, 'the traget here will be 4 sets of 8 - 10 reps', 24),
+	(18, 'incline dumbell press', 29, 'target here will be 4 sets of 8 - 10 reps', 24),
+	(19, 'Chest fly', 29, 'target here will be 15 - 20 reps for 5 sets', 24),
+	(20, 'Read delts with pulley crossover', 29, 'here we will be doing 4 sets of 25 reps', 24),
+	(21, 'Lateral raises', 29, 'target here will be to do 4 sets of 12 - 15 reps', 24),
+	(22, 'military press', 29, 'here it will be strengh so it\'s gonna be 4 sets of 4 - 6 reps', 24);
 
 -- Listage de la structure de table wolf_fitness. exercise_logs
 CREATE TABLE IF NOT EXISTS `exercise_logs` (
@@ -56,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `exercise_logs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Listage des données de la table wolf_fitness.exercise_logs : ~1 rows (environ)
 
 -- Listage de la structure de table wolf_fitness. post
 CREATE TABLE IF NOT EXISTS `post` (
@@ -71,9 +78,12 @@ CREATE TABLE IF NOT EXISTS `post` (
   `user_id` int NOT NULL,
   `training_id` int DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Listage des données de la table wolf_fitness.post : ~0 rows (environ)
+INSERT INTO `post` (`id`, `post_description`, `post_content`, `created_at`, `post_author`, `media`, `pp_user`, `likes`, `user_id`, `training_id`) VALUES
+	(109, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus iaculis nulla vel dictum euismod. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec a tristique ipsum. Suspendisse potenti. Aenean tincidunt ut nunc sed iaculis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris vel consequat urna. Aenean interdum luctus nulla sit amet luctus. Nullam sem augue, malesuada eu nisi non, scelerisque pretium ipsum. Vestibulum quis pharetra ipsum, sed convallis ex. Sed arcu augue, tristique vitae ullamcorper in, consequat sodales sem. Morbi aliquam', '""', '2024-07-10 10:29:27', 'test', '../../uploads/0f4ff3e49c67c68402de926dc53421fb.png', '../../uploads/39e9b3688f095627b21cb16d47bcb9ac.webp', 1, 23, NULL),
+	(110, 'hey thisa training don\'t hesitate to add it to your workouts and give it a like and leave a comments.', '""', '2024-07-10 10:50:03', 'slush', NULL, '../../uploads/68780cd9f7a366ae2e74647792ab91a1.jpeg', 0, 24, 29);
 
 -- Listage de la structure de table wolf_fitness. post_likes
 CREATE TABLE IF NOT EXISTS `post_likes` (
@@ -82,9 +92,11 @@ CREATE TABLE IF NOT EXISTS `post_likes` (
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `post_id` (`post_id`,`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Listage des données de la table wolf_fitness.post_likes : ~0 rows (environ)
+INSERT INTO `post_likes` (`id`, `post_id`, `user_id`) VALUES
+	(42, 109, 24);
 
 -- Listage de la structure de table wolf_fitness. training
 CREATE TABLE IF NOT EXISTS `training` (
@@ -97,9 +109,11 @@ CREATE TABLE IF NOT EXISTS `training` (
   `user_id` int NOT NULL,
   `training_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Listage des données de la table wolf_fitness.training : ~0 rows (environ)
+INSERT INTO `training` (`id`, `name`, `creator`, `description`, `nbrExercices`, `created_at`, `user_id`, `training_id`) VALUES
+	(29, 'Monday push', 'slush', 'this a push day that will focus on the chest and shoulders', 6, '2024-07-10 10:34:12', 24, 29);
 
 -- Listage de la structure de table wolf_fitness. users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -110,9 +124,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `bio` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT 'empty bio',
   `profile_pic` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Les données exportées n'étaient pas sélectionnées.
+-- Listage des données de la table wolf_fitness.users : ~0 rows (environ)
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `bio`, `profile_pic`) VALUES
+	(23, 'test', 'test@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$WXJxYmphSkRvbnVBUHQyMw$8Hh735SGywV28zQZiOHPIuUlVwhuTORCCUhso59DkD8', 'empty bio', '../../uploads/39e9b3688f095627b21cb16d47bcb9ac.webp'),
+	(24, 'slush', 'slush@bork.com', '$argon2id$v=19$m=65536,t=4,p=1$SVFWWDBreVFxZWFPWGdNVA$tDCNnbKvhAUWYJ9lxiHZctAxe5Jy45vl5cbawTSLFCw', 'empty bio', '../../uploads/68780cd9f7a366ae2e74647792ab91a1.jpeg');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
