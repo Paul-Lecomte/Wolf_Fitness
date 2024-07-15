@@ -43,9 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['log-set'])) {
     $weight = $_POST['weight'] ?? '';
 
     if (!empty($reps) && !empty($weight)) {
-        $sql = "INSERT INTO exercise_logs (training_exercise_id, reps, weight) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO exercise_logs (training_exercise_id, reps, weight, user_id) VALUES (?, ?, ?, ?)";
         $stmt = $db->prepare($sql);
-        $stmt->execute([$id, $reps, $weight]);
+        $stmt->execute([$id, $reps, $weight, $user_id]);
         header("Location: exercices.php?id=$id");
         exit;
     }
