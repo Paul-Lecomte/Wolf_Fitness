@@ -46,10 +46,10 @@ $comments = $req->fetchAll(PDO::FETCH_OBJ);
 include "../../components/likes.php";
 
 if (!empty($_POST)) {
-    if (isset($_POST['content']) && !empty($_POST['content'])) {
+    if (isset($_POST['content-comment']) && !empty($_POST['content-comment'])) {
         // Here the form is complete
         // We take all the form info and prepare them
-        $postContent = strip_tags($_POST['content']);
+        $postContent = strip_tags($_POST['content-comment']);
         $author = $_SESSION['user']["username"];
         $profile_pic = $_SESSION['user']["profile_pic"];
         $postCreated_at = date("Y-m-d H:i:s");
@@ -215,12 +215,12 @@ include "../../components/make_post.php";
 <?php endforeach; ?>
 <!-- New comment ----------------------------------------------------------------------------->
 <div id="new-post" class="p-3">
-    <form method="post" enctype="multipart/form-data">
+    <form method="post">
         <div class="cp-container pb-4">
             <p>Be nice</p>
         </div>
         <div class="cp-description control">
-            <textarea class="p-1 box" name="content" id="cp-input"></textarea>
+            <textarea class="p-1 box" name="content-comment" id="cp-input"></textarea>
         </div>
         <div class="is-flex is-justify-content-space-around">
             <button class="mt-3 p-1 c-button" onclick="closeNewPost()">Close</button>

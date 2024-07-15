@@ -36,6 +36,11 @@ session_start();
         justify-content: center;
         color: #191654;
       }
+
+      .pers_button:hover{
+          background-color: rgba(125, 125, 125, 0.55);
+          border-radius: 10px;
+      }
     </style>
   </head>
   <body class="site">

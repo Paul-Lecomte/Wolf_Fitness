@@ -144,11 +144,11 @@ if (!empty($_POST)) {
         if (!$req->execute()) {
             die("Post request failed");
         } else {
-            header("Refresh:0; url=../feed/feed.php");
+            header("Refresh:0;");
             exit();
         }
     } else {
-        header("location: ../feed/feed.php");
+        header("Refresh:0;");
         exit;
     }
 }
