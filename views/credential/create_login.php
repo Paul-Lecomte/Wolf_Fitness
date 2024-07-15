@@ -187,7 +187,7 @@ if (!empty($_POST)) {
         exit();
     } else {
         die('<div class="m-3 is-flex  is-justify-content-center is-align-items-center is-flex-direction-column">
-            <img class="is-centered image is-128x128" src="../assets/logo.svg" alt="logo">
+            <img class="is-centered image is-128x128" src="../../assets/logo.svg" alt="logo">
             <div class="box">
                 <p class="has-text-centered is-size-3">
                     ERROR
