@@ -8,10 +8,10 @@
                 <div class="buttons">
                     <?php if (!isset($_SESSION["user"])): ?>
                     <a href="../credential/create_login.php" class="button is-primary">
-                        <strong>S'inscrire</strong>
+                        <strong>Register</strong>
                     </a>
                     <a href="../credential/login.php" class="button is-info is-dark">
-                        Se connecter
+                        Login
                     </a>
                     <?php else: ?>
                     <a href="../credential/logout.php" class="button is-danger is-dark">
