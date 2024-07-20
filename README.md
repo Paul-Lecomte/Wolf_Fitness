@@ -29,11 +29,15 @@ Wolf Fitness is a web-based social media platform for fitness enthusiasts, inspi
    ```sh
    cd Wolf_Fitness
    ```
-3. Install dependencies:
+3. Import the database into your sql:
+   ```sh
+   cd database
+   ```
+4. Install dependencies:
    ```sh
    npm install
    ```
-4. Run the project:
+5. Run the project:
    ```sh
    npm start
    ```
