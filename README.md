@@ -61,13 +61,31 @@ Wolf Fitness is a web-based social media platform for fitness enthusiasts, inspi
 
 ## Premade users
 
-1. name : test
-   email : test@gmail.com
-   password : test123
+1. name : 
+   ```sh
+   test
+   ```
+   email : 
+   ```sh
+   test@gmail.com
+   ```
+   password :
+   ```sh
+    test123
+    ```
 
-2. name : slush
-   email : slush@bork.com
-   password : ThisIsASecurePassword
+2. name : 
+   ```sh
+   slush
+   ```
+   email : 
+   ```sh
+   slush@bork.com
+   ```
+   password : 
+   ```sh
+   ThisIsASecurePassword
+   ```
 
 ## License
 
