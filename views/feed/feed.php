@@ -36,12 +36,14 @@ include "../../components/make_post.php";
     ?>
     <div class="css_post container column is-half my-6">
         <div class="profile container is-flex-direction-row pb-2">
-            <div class="profile-img image is-48x48">
-                <img src="<?= htmlspecialchars($post['pp_user']) ?>" alt="profile image">
-            </div>
-            <div class="profile-name pl-3">
-                <p><?= htmlspecialchars($post['post_author']) ?></p>
-            </div>
+            <a href="../profile/public_profile.php?id=<?= $post['user_id'] ?>">
+                <div class="profile-img image is-48x48">
+                    <img src="<?= htmlspecialchars($post['pp_user']) ?>" alt="profile image">
+                </div>
+                <div class="profile-name pl-3">
+                    <p><?= htmlspecialchars($post['post_author']) ?></p>
+                </div>
+            </a>
         </div>
         <div class="post-content pers_align is-justify-content-center is-align-items-center pb-3">
             <div class="description pb-3">
