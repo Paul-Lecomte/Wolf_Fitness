@@ -20,7 +20,16 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 // Use the session info for later use
 $user_id = $_GET['id'];
+$public_user_id = $user_id;
+$user_id = $_SESSION['user']['id'];
 
+// Check if the current user follows the public user
+$sql = "SELECT * FROM follow WHERE user_id = :user_id AND followed_user_id = :followed_user_id";
+$stmt = $db->prepare($sql);
+$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$stmt->bindParam(':followed_user_id', $public_user_id, PDO::PARAM_INT);
+$stmt->execute();
+$following = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $sql = "SELECT username, profile_pic, bio FROM users WHERE user_id = :user_id";
 $stmt = $db->prepare($sql);
@@ -67,6 +76,19 @@ include "../../components/make_post.php";
     <div class="post-content column is-four-fifths is-justify-content-center box is-align-items-center has-background-dark has-text-centered mb-5">
         <p class="subtitle"><?= $bio ?></p>
     </div>
+    <?php if ($following): ?>
+    <!-- Unfollow Form -->
+    <form method="post" action="../../components/follow.php" class="is-flex is-align-items-center is-flex-direction-row">
+        <input type="hidden" name="user_id" value="<?= htmlspecialchars($public_user_id, ENT_QUOTES, 'UTF-8') ?>">
+        <button type="submit" name="follow" class="button">Unfollow</button>      
+    </form>
+    <?php else: ?>
+    <!-- Follow Form -->
+    <form method="post" action="../../components/follow.php" class="is-flex is-align-items-center is-flex-direction-row">
+        <input type="hidden" name="user_id" value="<?= htmlspecialchars($public_user_id, ENT_QUOTES, 'UTF-8') ?>">
+        <button type="submit" name="follow" class="button">Follow</button>
+    </form>
+    <?php endif; ?>
 </div>
 <div>
 <div class="tabs columns">

@@ -104,7 +104,9 @@ include "../../components/make_post.php";
                                     <p>Training: <?= htmlspecialchars($training['name']) ?></p>
                                     <p>Number of exercises: <?= htmlspecialchars($training['nbrExercices']) ?></p>
                                     <p><?= htmlspecialchars($training['description']) ?></p>
-                                    <button class="button is-primary" onclick="openTrainingModal(<?= $post['training_id'] ?>)">View Training</button>
+                                    <?php if (isset($post->training_id) && !empty($post->training_id)): ?>
+                                        <button class="button is-primary" onclick="openTrainingModal(<?= $post->training_id ?>)">View Training</button>
+                                    <?php endif; ?>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -177,6 +179,9 @@ include "../../components/make_post.php";
                                     <p>Training: <?= htmlspecialchars($training['name']) ?></p>
                                     <p>Number of exercises: <?= htmlspecialchars($training['nbrExercices']) ?></p>
                                     <p><?= htmlspecialchars($training['description']) ?></p>
+                                    <?php if (isset($post->training_id) && !empty($post->training_id)): ?>
+                                        <button class="button is-primary" onclick="openTrainingModal(<?= $post->training_id ?>)">View Training</button>
+                                    <?php endif; ?>
                                 </div>
                             <?php endif; ?>
                         </div>
