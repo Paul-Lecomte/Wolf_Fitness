@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `exercice` (
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Listage des données de la table wolf_fitness.exercice : ~6 rows (environ)
 INSERT INTO `exercice` (`id`, `name`, `training_id`, `description`, `user_id`) VALUES
@@ -50,7 +50,11 @@ INSERT INTO `exercice` (`id`, `name`, `training_id`, `description`, `user_id`) V
 	(19, 'Chest fly', 29, 'target here will be 15 - 20 reps for 5 sets', 24),
 	(20, 'Read delts with pulley crossover', 29, 'here we will be doing 4 sets of 25 reps', 24),
 	(21, 'Lateral raises', 29, 'target here will be to do 4 sets of 12 - 15 reps', 24),
-	(22, 'military press', 29, 'here it will be strengh so it\'s gonna be 4 sets of 4 - 6 reps', 24);
+	(22, 'military press', 29, 'here it will be strengh so it\'s gonna be 4 sets of 4 - 6 reps', 24),
+	(23, 'tets', 30, 'test', 24),
+	(24, 'test', 30, 'teste', 24),
+	(25, 'test brand new', 31, 'test brand new', 25),
+	(26, 'test brand new', 31, 'test brand new', 25);
 
 -- Listage de la structure de table wolf_fitness. exercise_logs
 CREATE TABLE IF NOT EXISTS `exercise_logs` (
@@ -68,6 +72,18 @@ INSERT INTO `exercise_logs` (`id`, `training_exercise_id`, `reps`, `weight`, `lo
 	(7, 17, 12, 32.00, '2024-07-17 08:07:58', 24),
 	(8, 17, 32, 65.00, '2024-07-17 08:08:06', 24);
 
+-- Listage de la structure de table wolf_fitness. follow
+CREATE TABLE IF NOT EXISTS `follow` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `followed_user_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `follower_id` (`user_id`) USING BTREE,
+  UNIQUE KEY `followed_id` (`followed_user_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Listage des données de la table wolf_fitness.follow : ~0 rows (environ)
+
 -- Listage de la structure de table wolf_fitness. post
 CREATE TABLE IF NOT EXISTS `post` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -81,12 +97,13 @@ CREATE TABLE IF NOT EXISTS `post` (
   `user_id` int NOT NULL,
   `training_id` int DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Listage des données de la table wolf_fitness.post : ~2 rows (environ)
 INSERT INTO `post` (`id`, `post_description`, `post_content`, `created_at`, `post_author`, `media`, `pp_user`, `likes`, `user_id`, `training_id`) VALUES
-	(109, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus iaculis nulla vel dictum euismod. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec a tristique ipsum. Suspendisse potenti. Aenean tincidunt ut nunc sed iaculis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris vel consequat urna. Aenean interdum luctus nulla sit amet luctus. Nullam sem augue, malesuada eu nisi non, scelerisque pretium ipsum. Vestibulum quis pharetra ipsum, sed convallis ex. Sed arcu augue, tristique vitae ullamcorper in, consequat sodales sem. Morbi aliquam', '""', '2024-07-10 10:29:27', 'test', '../../uploads/0f4ff3e49c67c68402de926dc53421fb.png', '../../uploads/39e9b3688f095627b21cb16d47bcb9ac.webp', 1, 23, NULL),
-	(110, 'hey thisa training don\'t hesitate to add it to your workouts and give it a like and leave a comments.', '""', '2024-07-10 10:50:03', 'slush', NULL, '../../uploads/68780cd9f7a366ae2e74647792ab91a1.jpeg', 0, 24, 29);
+	(109, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus iaculis nulla vel dictum euismod. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec a tristique ipsum. Suspendisse potenti. Aenean tincidunt ut nunc sed iaculis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris vel consequat urna. Aenean interdum luctus nulla sit amet luctus. Nullam sem augue, malesuada eu nisi non, scelerisque pretium ipsum. Vestibulum quis pharetra ipsum, sed convallis ex. Sed arcu augue, tristique vitae ullamcorper in, consequat sodales sem. Morbi aliquam', '""', '2024-07-10 10:29:27', 'test', '../../uploads/0f4ff3e49c67c68402de926dc53421fb.png', '../../uploads/39e9b3688f095627b21cb16d47bcb9ac.webp', 2, 23, NULL),
+	(114, 'this is a test for the public profiles', '""', '2024-07-27 06:39:20', 'slush', NULL, '../../uploads/68780cd9f7a366ae2e74647792ab91a1.jpeg', 1, 24, 30),
+	(115, 'test brand new', '""', '2024-07-27 06:41:38', 'new', NULL, '../../uploads/99734bc469ca604fc6f9c5c6339f5fe1.png', 0, 25, 31);
 
 -- Listage de la structure de table wolf_fitness. post_likes
 CREATE TABLE IF NOT EXISTS `post_likes` (
@@ -95,11 +112,14 @@ CREATE TABLE IF NOT EXISTS `post_likes` (
   `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `post_id` (`post_id`,`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table wolf_fitness.post_likes : ~1 rows (environ)
+-- Listage des données de la table wolf_fitness.post_likes : ~0 rows (environ)
 INSERT INTO `post_likes` (`id`, `post_id`, `user_id`) VALUES
-	(42, 109, 24);
+	(44, 109, 24),
+	(46, 109, 25),
+	(43, 110, 23),
+	(45, 114, 24);
 
 -- Listage de la structure de table wolf_fitness. training
 CREATE TABLE IF NOT EXISTS `training` (
@@ -112,11 +132,13 @@ CREATE TABLE IF NOT EXISTS `training` (
   `user_id` int NOT NULL,
   `training_id` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table wolf_fitness.training : ~1 rows (environ)
+-- Listage des données de la table wolf_fitness.training : ~0 rows (environ)
 INSERT INTO `training` (`id`, `name`, `creator`, `description`, `nbrExercices`, `created_at`, `user_id`, `training_id`) VALUES
-	(29, 'Monday push', 'slush', 'this a push day that will focus on the chest and shoulders', 6, '2024-07-10 10:34:12', 24, 29);
+	(29, 'Monday push', 'slush', 'this a push day that will focus on the chest and shoulders', 6, '2024-07-10 10:34:12', 24, 29),
+	(30, 'this is a test', 'slush', 'well hello there handsome', 2, '2024-07-27 06:37:32', 24, 30),
+	(31, 'test brand new', 'new', 'test brand new', 2, '2024-07-27 06:41:13', 25, 31);
 
 -- Listage de la structure de table wolf_fitness. users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -126,13 +148,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `bio` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT 'empty bio',
   `profile_pic` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `followers` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table wolf_fitness.users : ~2 rows (environ)
-INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `bio`, `profile_pic`) VALUES
-	(23, 'test', 'test@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$WXJxYmphSkRvbnVBUHQyMw$8Hh735SGywV28zQZiOHPIuUlVwhuTORCCUhso59DkD8', 'empty bio', '../../uploads/39e9b3688f095627b21cb16d47bcb9ac.webp'),
-	(24, 'slush', 'slush@bork.com', '$argon2id$v=19$m=65536,t=4,p=1$SVFWWDBreVFxZWFPWGdNVA$tDCNnbKvhAUWYJ9lxiHZctAxe5Jy45vl5cbawTSLFCw', 'empty bio', '../../uploads/68780cd9f7a366ae2e74647792ab91a1.jpeg');
+-- Listage des données de la table wolf_fitness.users : ~3 rows (environ)
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `bio`, `profile_pic`, `followers`) VALUES
+	(23, 'test', 'test@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$WXJxYmphSkRvbnVBUHQyMw$8Hh735SGywV28zQZiOHPIuUlVwhuTORCCUhso59DkD8', 'empty bio', '../../uploads/39e9b3688f095627b21cb16d47bcb9ac.webp', 0),
+	(24, 'slush', 'slush@bork.com', '$argon2id$v=19$m=65536,t=4,p=1$SVFWWDBreVFxZWFPWGdNVA$tDCNnbKvhAUWYJ9lxiHZctAxe5Jy45vl5cbawTSLFCw', 'empty bio', '../../uploads/68780cd9f7a366ae2e74647792ab91a1.jpeg', 0),
+	(25, 'new', 'new@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$QWZmekpMbEpLeS41YmhqRw$6qIt7/rxsNnlgdU2sCx5CBuOh0vJ6Y3KC8GUUYK9+FA', 'empty bio', '../../uploads/99734bc469ca604fc6f9c5c6339f5fe1.png', 1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

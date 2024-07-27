@@ -26,14 +26,14 @@ $user_id = $_SESSION['user']['id'];
 // Check if the current user follows the public user
 $sql = "SELECT * FROM follow WHERE user_id = :user_id AND followed_user_id = :followed_user_id";
 $stmt = $db->prepare($sql);
-$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$stmt->bindParam(':user_id', $public_user_id, PDO::PARAM_INT);
 $stmt->bindParam(':followed_user_id', $public_user_id, PDO::PARAM_INT);
 $stmt->execute();
 $following = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $sql = "SELECT username, profile_pic, bio FROM users WHERE user_id = :user_id";
 $stmt = $db->prepare($sql);
-$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$stmt->bindParam(':user_id', $public_user_id, PDO::PARAM_INT);
 $stmt->execute();
 $user_info = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -53,7 +53,7 @@ $user_posts = $user_posts_stmt->fetchAll(PDO::FETCH_OBJ);
 // Fetch user liked posts
 $liked_posts_query = "SELECT p.* FROM post_likes pl JOIN post p ON pl.post_id = p.id WHERE pl.user_id = :user_id";
 $liked_posts_stmt = $db->prepare($liked_posts_query);
-$liked_posts_stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$liked_posts_stmt->bindParam(':user_id', $public_user_id, PDO::PARAM_INT);
 $liked_posts_stmt->execute();
 $liked_posts = $liked_posts_stmt->fetchAll(PDO::FETCH_OBJ);
 
