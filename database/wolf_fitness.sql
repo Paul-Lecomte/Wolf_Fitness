@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `exercice` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table wolf_fitness.exercice : ~6 rows (environ)
+-- Listage des données de la table wolf_fitness.exercice : ~8 rows (environ)
 INSERT INTO `exercice` (`id`, `name`, `training_id`, `description`, `user_id`) VALUES
 	(17, 'bench press', 29, 'the traget here will be 4 sets of 8 - 10 reps', 24),
 	(18, 'incline dumbell press', 29, 'target here will be 4 sets of 8 - 10 reps', 24),
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `follow` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `follower_id` (`user_id`) USING BTREE,
   UNIQUE KEY `followed_id` (`followed_user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Listage des données de la table wolf_fitness.follow : ~0 rows (environ)
 
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `post_likes` (
   UNIQUE KEY `post_id` (`post_id`,`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table wolf_fitness.post_likes : ~0 rows (environ)
+-- Listage des données de la table wolf_fitness.post_likes : ~3 rows (environ)
 INSERT INTO `post_likes` (`id`, `post_id`, `user_id`) VALUES
 	(44, 109, 24),
 	(46, 109, 25),
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `training` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table wolf_fitness.training : ~0 rows (environ)
+-- Listage des données de la table wolf_fitness.training : ~3 rows (environ)
 INSERT INTO `training` (`id`, `name`, `creator`, `description`, `nbrExercices`, `created_at`, `user_id`, `training_id`) VALUES
 	(29, 'Monday push', 'slush', 'this a push day that will focus on the chest and shoulders', 6, '2024-07-10 10:34:12', 24, 29),
 	(30, 'this is a test', 'slush', 'well hello there handsome', 2, '2024-07-27 06:37:32', 24, 30),

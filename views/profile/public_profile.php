@@ -26,7 +26,7 @@ $user_id = $_SESSION['user']['id'];
 // Check if the current user follows the public user
 $sql = "SELECT * FROM follow WHERE user_id = :user_id AND followed_user_id = :followed_user_id";
 $stmt = $db->prepare($sql);
-$stmt->bindParam(':user_id', $public_user_id, PDO::PARAM_INT);
+$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 $stmt->bindParam(':followed_user_id', $public_user_id, PDO::PARAM_INT);
 $stmt->execute();
 $following = $stmt->fetch(PDO::FETCH_ASSOC);
