@@ -77,12 +77,13 @@ CREATE TABLE IF NOT EXISTS `follow` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `followed_user_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `follower_id` (`user_id`) USING BTREE,
-  UNIQUE KEY `followed_id` (`followed_user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Listage des données de la table wolf_fitness.follow : ~0 rows (environ)
+INSERT INTO `follow` (`id`, `user_id`, `followed_user_id`) VALUES
+	(17, 23, 24),
+	(18, 23, 25);
 
 -- Listage de la structure de table wolf_fitness. post
 CREATE TABLE IF NOT EXISTS `post` (
@@ -155,8 +156,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Listage des données de la table wolf_fitness.users : ~3 rows (environ)
 INSERT INTO `users` (`user_id`, `username`, `email`, `password`, `bio`, `profile_pic`, `followers`) VALUES
 	(23, 'test', 'test@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$WXJxYmphSkRvbnVBUHQyMw$8Hh735SGywV28zQZiOHPIuUlVwhuTORCCUhso59DkD8', 'empty bio', '../../uploads/39e9b3688f095627b21cb16d47bcb9ac.webp', 0),
-	(24, 'slush', 'slush@bork.com', '$argon2id$v=19$m=65536,t=4,p=1$SVFWWDBreVFxZWFPWGdNVA$tDCNnbKvhAUWYJ9lxiHZctAxe5Jy45vl5cbawTSLFCw', 'empty bio', '../../uploads/68780cd9f7a366ae2e74647792ab91a1.jpeg', 0),
-	(25, 'new', 'new@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$QWZmekpMbEpLeS41YmhqRw$6qIt7/rxsNnlgdU2sCx5CBuOh0vJ6Y3KC8GUUYK9+FA', 'empty bio', '../../uploads/99734bc469ca604fc6f9c5c6339f5fe1.png', 1);
+	(24, 'slush', 'slush@bork.com', '$argon2id$v=19$m=65536,t=4,p=1$SVFWWDBreVFxZWFPWGdNVA$tDCNnbKvhAUWYJ9lxiHZctAxe5Jy45vl5cbawTSLFCw', 'empty bio', '../../uploads/68780cd9f7a366ae2e74647792ab91a1.jpeg', 1),
+	(25, 'new', 'new@gmail.com', '$argon2id$v=19$m=65536,t=4,p=1$QWZmekpMbEpLeS41YmhqRw$6qIt7/rxsNnlgdU2sCx5CBuOh0vJ6Y3KC8GUUYK9+FA', 'empty bio', '../../uploads/99734bc469ca604fc6f9c5c6339f5fe1.png', 3);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
