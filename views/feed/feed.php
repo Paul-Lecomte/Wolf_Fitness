@@ -42,8 +42,8 @@ include "../../components/make_post.php";
 ?>
 <!-- Feed ----------------------------------------------------------------------------->
 <div class="tabs columns">
-    <button class="tablinks column is-half button" onclick="openTab(event, 'Posts')">Posts</button>
-    <button class="tablinks column is-half button" onclick="openTab(event, 'Likes')">Likes</button>
+    <button class="tablinks column is-half button" onclick="openTab(event, 'Posts')">Feed</button>
+    <button class="tablinks column is-half button" onclick="openTab(event, 'Likes')">Follwed</button>
 </div>
 
 <div id="Posts" class="tabcontent">
